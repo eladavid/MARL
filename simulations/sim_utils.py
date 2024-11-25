@@ -2,6 +2,7 @@ from typing import List, Dict, Set, Sequence, Any
 import numpy as np
 import copy
 from itertools import product
+import networkx as nx
 
 from RL_utils import calc_policy_gap
 from reward_functions import Reward
@@ -194,9 +195,10 @@ class MultiAgent:
         return single_agent_policies
 
     def extract_single_agent_policy_from_joint_policy(self, joint_policy: Dict[Any, Any], agent_idx: int) -> Dict[Any, Any]:
+        # TODO - fix bug!!!
         single_agent_policy = {}
         for joint_state, joint_action in joint_policy.items():
-            single_agent_policy[joint_state[agent_idx]] = joint_action[agent_idx]
+            single_agent_policy[joint_state] = joint_action[agent_idx]
         return single_agent_policy
 
     def inject_single_agent_policy_into_joint_policy(self,
@@ -207,7 +209,7 @@ class MultiAgent:
         new_joint_agent_policy = copy.deepcopy(joint_policy)
         for joint_state, joint_action in joint_policy.items():
             new_joint_action = list(joint_policy[joint_state])
-            new_joint_action[agent_idx] = single_agent_policy[joint_state[agent_idx]]
+            new_joint_action[agent_idx] = single_agent_policy[joint_state]
             new_joint_agent_policy[joint_state] = tuple(new_joint_action)
         return new_joint_agent_policy
 
@@ -218,7 +220,7 @@ class MultiAgent:
 
         # get all alternatives
         alt_policies = []
-        states = list(self.agents[agent_idx].state_space)
+        states = self.get_joint_states()
         actions = list(self.agents[agent_idx].action_space)
 
 
@@ -339,45 +341,59 @@ class MultiAgent:
 
         self.optimum_calculated = True
 
-    def decoupled_value_iteration(self, theta: float = 1e-6):
-        # TODO - revisit - this should not be used
-        raise ValueError("THIS FUNCTION IS BROKEN")
+    def single_agent_decoupled_value_iteration(self, joint_policy: Dict, agent_idx: int, theta: float = 1e-6):
+        # extract all other agents policies from the joint policy
 
-        decoupled_value_function = [np.zeros(len(agent.state_space)) for i, agent in enumerate(self.agents)]
-        decoupled_policies = [np.zeros(len(agent.state_space)) for i, agent in enumerate(self.agents)]
+        agent_i = self.agents[agent_idx]
 
         num_states = self.state_space_size
-        num_actions = self.action_space_size
+        joint_states = [self.index_to_state(state_idx) for state_idx in range(num_states)]
+
+        # new impl
+        agent_i_decoupled_value_function = np.zeros(num_states)
+
+        decoupled_policy = copy.deepcopy(joint_policy)
+
         while True:
-            delta = [0 for _ in range(len(decoupled_policies))]
+            delta = 0
+            # iterate over all joint states
             for state_index in range(num_states):
                 joint_state = self.index_to_state(state_index)
                 single_agent_states = [s for s in joint_state]
 
-                v = [v[s] for v, s in zip(decoupled_value_function, single_agent_states)]
-                decoupled_q_values = [np.zeros(len(agent.action_space)) for i, agent in enumerate(self.agents)]
-                for joint_action_index in range(num_actions):
+                v = agent_i_decoupled_value_function[state_index]
+                decoupled_q_values = np.zeros(len(agent_i.action_space))
 
-                    joint_action = self.index_to_action(joint_action_index)
-                    reward = self._multi_agent_reward.get_reward(joint_state, joint_action)
+                prev_joint_action = joint_policy[joint_state]
+                # iterate over single agent actions given a fixed policy of other agents
+                for agent_i_action in list(agent_i.action_space):
+                    # construct the joint action based on all other agents' policy
+                    new_joint_action = list(copy.deepcopy(prev_joint_action))
+                    new_joint_action[agent_idx] = agent_i_action
+                    new_joint_action = tuple(new_joint_action)
 
-                    single_agent_actions = [a for a in joint_action]
-                    # TODO - implement to multiple agents separate mdps probs fetch
+                    # calc single agent reward
+                    agent_i_reward = self._multi_agent_reward.get_single_agent_reward(agent_idx,
+                                                                                      joint_state,
+                                                                                      new_joint_action)
 
-                    next_state_probs = [self.agents[i]._mdp.transition_prob[s][a]
-                                        for i, (s, a) in enumerate(zip(single_agent_states, single_agent_actions))]
+                    next_state_probs = self.get_joint_transition_prob(joint_state, new_joint_action)
 
-                    for i, (single_agent_q, state, action) in enumerate(zip(decoupled_q_values, single_agent_states, single_agent_actions)):
-                        single_agent_q[action] = sum(next_state_probs[i][next_state_idx] * (reward + self.gamma * decoupled_value_function[i][next_state_idx])
-                                                           for next_state_idx in range(len(decoupled_value_function[i])))
+                    # for i, (single_agent_q, state, action) in enumerate(zip(decoupled_q_values, single_agent_states, single_agent_actions)):
+                    decoupled_q_values[agent_i_action] = sum(next_state_probs[next_state_idx] * (agent_i_reward + self.gamma * agent_i_decoupled_value_function[next_state_idx])
+                                                           for next_state_idx in range(len(agent_i_decoupled_value_function)))
 
-                for i, (single_agent_q, state) in enumerate(zip(decoupled_q_values, single_agent_states)):
-                    decoupled_value_function[i][state] = np.max(single_agent_q)
-                    decoupled_policies[i][state] = np.argmax(single_agent_q)
-                    delta[i] = max(delta, abs(v[i] - decoupled_value_function[i][state]))
 
-            if max(delta) < theta:
+                agent_i_decoupled_value_function[state_index] = np.max(decoupled_q_values)
+
+                new_joint_action = list(copy.deepcopy(prev_joint_action))
+                new_joint_action[agent_idx] = agent_i.index_to_action(np.argmax(decoupled_q_values))
+                decoupled_policy[joint_state] = tuple(new_joint_action)
+                delta = max(delta, abs(v - agent_i_decoupled_value_function[state_index]))
+
+            if delta < theta:
                 break
+        return decoupled_policy, agent_i_decoupled_value_function
 
     def calc_decoupled_value_function(self,
                                       joint_policy: Dict[Any, Any],
@@ -518,22 +534,22 @@ class MultiAgent:
         nash_policies = []
 
         policies_dict = {
-            hash_dict(policy_dict): policy_dict
+            self.get_policy_string_name(policy_dict): policy_dict
             for policy_dict
             in self.get_all_deterministic_policies(states=self.get_joint_states(),
                                                    actions=self.get_joint_actions())
         }
         # calc once value function per policy
         policies_value_functions = {
-            policy_hash: self.calc_decoupled_value_function(policy)
-            for policy_hash, policy in policies_dict.items()
+            policy_number: self.calc_decoupled_value_function(policy)
+            for policy_number, policy in policies_dict.items()
         }
 
         # for each policy - check if nash policy
-        for policy_hash, policy in policies_dict.items():
+        for policy_number, policy in policies_dict.items():
             is_nash_policy = True
             # calculate each agent's value function
-            agents_value_functions = policies_value_functions[policy_hash]
+            agents_value_functions = policies_value_functions[policy_number]
 
             # check if satisfies Nash condition on agent_idx coordinate
             for agent_idx, agent in enumerate(self.agents):
@@ -545,11 +561,11 @@ class MultiAgent:
                                       for sap in agent_i_alt_policies]
 
                 # calculate alt policies value functions
-                alt_policies_value_functions = [policies_value_functions[hash_dict(alt_joint_policy)]
+                alt_policies_value_functions = [policies_value_functions[self.get_policy_string_name(alt_joint_policy)]
                                                 for alt_joint_policy in alt_joint_policies]
 
                 # check if optimal for agent i
-                is_optimal_for_agent_i = all(agents_value_functions[agent_idx][state_idx] >= alt_policy_value_functions[agent_idx][state_idx]
+                is_optimal_for_agent_i = all(agents_value_functions[agent_idx][state_idx] + 1e-6 >= alt_policy_value_functions[agent_idx][state_idx]
                                              for alt_policy_value_functions in alt_policies_value_functions
                                              for state_idx in range(self.state_space_size))
 
@@ -562,6 +578,93 @@ class MultiAgent:
                 nash_policies.append(policy)
 
         return nash_policies
+
+    def build_policies_best_response_graph(self):
+        agent_colors = ['red', 'blue', 'green', 'purple', 'orange']
+        assert len(self.agents) <= len(agent_colors), f"cannot work with more agents than {len(agent_colors)}"
+        all_deterministic_policies = self.get_all_deterministic_policies(states=self.get_joint_states(),
+                                                                         actions=self.get_joint_actions())
+        nash_policies = self.find_dynamic_nash_policies()
+        # Create a directed graph
+        policy_graph = nx.MultiDiGraph()
+
+        # Add nodes (policies)
+        for p in all_deterministic_policies:
+            p_number = self.get_policy_string_name(p)
+            policy_graph.add_node(p_number, color=agent_colors[2] if p in nash_policies else agent_colors[1])
+
+        # build best-response mapping for all agents
+        for i, _ in enumerate(self.agents):
+            # Add directed edges based on best responses
+            for policy in all_deterministic_policies:
+                # Add edge for agent i's best response
+                agent_i_best_response, _ = self.single_agent_decoupled_value_iteration(joint_policy=policy, agent_idx=i)
+                policy_graph.add_edge(self.get_policy_string_name(policy),
+                                      self.get_policy_string_name(agent_i_best_response),
+                                      agent=f"agent {i+1}", color=agent_colors[i], style='solid' if i == 0 else 'dashed', weight=i+1)
+        return policy_graph
+
+    @staticmethod
+    def get_policy_string_name(policy):
+        joint_values = [v for v in policy.values()]
+        p_name = ''.join(f"{x}{y}" for x, y in joint_values)
+        p_number = int(p_name, base=2)
+        return p_number
+
+    @staticmethod
+    def plot_policy_best_response_graph(policy_graph):
+        # Example visualization using edge colors
+        import matplotlib.pyplot as plt
+
+        # Get edge colors from attributes
+        edge_colors = [data["color"] for _, _, data in policy_graph.edges(data=True)]
+        edge_styles = [data["style"] for _, _, data in policy_graph.edges(data=True)]
+        edge_weights = [data["weight"] for _, _, data in policy_graph.edges(data=True)]
+
+        # node attributes
+        node_colors = [data["color"] for _, data in policy_graph.nodes(data=True)]
+        in_degrees = dict(policy_graph.in_degree())
+        node_sizes = [in_degrees[node] * 300 for node in policy_graph.nodes]
+
+        # Draw the graph
+        pos = nx.spring_layout(policy_graph, scale=3)  # Position nodes with a spring layout
+
+        # for i, edge in enumerate(policy_graph.edges()):
+        #     nx.draw_networkx_edges(
+        #         policy_graph,
+        #         pos,
+        #         edgelist=[edge],
+        #         connectionstyle=f"arc3,rad={(i + 1) * 0.2}",
+        #         edge_color=edge_colors[i],
+        #         style=edge_styles[i],
+        #     )
+
+        # Draw graph
+        nx.draw(policy_graph, pos, with_labels=True,
+                node_color=node_colors, node_size=node_sizes,
+                edge_color=edge_colors,
+                style=edge_styles, font_size=8, connectionstyle="arc3,rad=0.2")
+
+        # Show the graph
+        plt.show()
+
+    @staticmethod
+    def find_self_equilibrium_nodes(policy_graph):
+        """
+        Finds all nodes in a directed graph where all outgoing edges point to the node itself.
+
+        Args:
+            G (nx.DiGraph): A directed graph.
+
+        Returns:
+            list: A list of self-equilibrium nodes.
+        """
+        self_equilibrium_nodes = []
+        for node in policy_graph.nodes:
+            out_neighbors = list(policy_graph.successors(node))  # Get all nodes this node points to
+            if len(out_neighbors) > 0 and set(out_neighbors) == {node}:  # All point to itself
+                self_equilibrium_nodes.append(node)
+        return self_equilibrium_nodes
 
 
 class MultiAgentSimulation:
