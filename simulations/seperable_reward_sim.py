@@ -1,3 +1,4 @@
+import copy
 from typing import List, Dict, Set, Sequence
 
 import numpy as np
@@ -6,6 +7,7 @@ import matplotlib
 import pickle
 
 from RL_utils import normalize_value_function
+from graph_utils import plot_policy_best_response_graph, compute_nash_convergence, find_nash_equilibrium_nodes
 from reward_functions import Reward, SimpleTwoAgentsReward, SeperableMultiAgentReward
 from simulations.sim_utils import MDP, Agent, MultiAgent, MultiAgentSimulation
 
@@ -25,8 +27,8 @@ if __name__ == "__main__":
     states = {0, 1}
     actions = {0, 1}
     transition_prob1 = {
-        0: {0: [1., 0.], 1: [0., 1.]},
-        1: {0: [1., 0.], 1: [0., 1.]}
+        0: {0: [1.0, 0.], 1: [0., 1.]},
+        1: {0: [1.0, 0.], 1: [0., 1.]}
     }
 
     transition_prob2 = {
@@ -38,11 +40,12 @@ if __name__ == "__main__":
 
     # Initialize MDPs for each agent
     mdp1 = MDP(states, actions, transition_prob1, start_state)
+    mdp1_copy = copy.deepcopy(mdp1)
     mdp2 = MDP(states, actions, transition_prob2, start_state)
 
     # Initialize agents
     agent1 = Agent(id=1, mdp=mdp1)
-    agent2 = Agent(id=2, mdp=mdp2)
+    agent2 = Agent(id=2, mdp=mdp1_copy)
 
     # collect optimality gap stats for each sim
     nash_policies_opt_gaps_per_sim = []
@@ -99,13 +102,29 @@ if __name__ == "__main__":
         #
         # welfare = simulation.calc_accumulated_reward()
 
-        per_state_nash_policies = simulation.multi_agent.find_static_nash_policies()
-        all_policies = simulation.multi_agent.get_all_deterministic_policies(states=simulation.multi_agent.get_joint_states(),
-                                                                             actions=simulation.multi_agent.get_joint_actions())
+        # per_state_nash_policies = simulation.multi_agent.find_static_nash_policies()
+        # all_policies = simulation.multi_agent.get_all_deterministic_policies(states=simulation.multi_agent.get_joint_states(),
+        #                                                                      actions=simulation.multi_agent.get_joint_actions())
+
+        # agent_decoupled_policies = simulation.multi_agent.get_agent_decoupled_policies(all_policies)
+
+        # policy_graph = simulation.multi_agent.build_policies_best_response_graph(use_agent_decoupled_policies_only=True)
+        # nash_nodes = find_nash_equilibrium_nodes(policy_graph)
+        # agents_list = sorted(list(set([data.get("agent", None) for _, _, data in policy_graph.edges(data=True)])))
+        # compute_nash_convergence(policy_graph, nash_nodes, agents_list)
+        #
+        # plot_policy_best_response_graph(policy_graph)
+        #
+        # # multi_agent.single_agent_decoupled_value_iteration(joint_policy=all_policies[1], agent_idx=0)
+        # # calculate all best-response policies for agent1 / agent2
+        # agent1_br_policies = [multi_agent.single_agent_decoupled_value_iteration(joint_policy=p, agent_idx=0)[0]
+        #                       for p in all_policies]
+        # agent2_br_policies = [multi_agent.single_agent_decoupled_value_iteration(joint_policy=p, agent_idx=1)[0]
+        #                       for p in all_policies]
 
         # all_normalized_value_funcs = [normalize_value_function(simulation.multi_agent.calc_value_function(p)) for p in all_policies]
-        nash_policies = simulation.multi_agent.find_dynamic_nash_policies()
-
+        # nash_policies = simulation.multi_agent.find_dynamic_nash_policies()
+        buff_nash = simulation.multi_agent.find_buffered_decoupled_dynamic_nash_policies(buffer_size=2)
         # TODO - write functions for max global welfare find?
 
         nash_policies_joint_value_funcs = [simulation.multi_agent.calc_value_function(joint_policy=n_p) for n_p in nash_policies]
