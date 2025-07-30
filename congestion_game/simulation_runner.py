@@ -99,8 +99,10 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
             actions, logprobs, rewards, potentials = env.do_episode()
 
             for i, agent in enumerate(env.agents):
-                agent_rewards = torch.stack([step_reward[i] for step_reward in rewards])
+                # agent_rewards = rewards[:, i]
+                agent_rewards = torch.stack([step_rewards[i] for step_rewards in rewards])
                 agent_logprobs = torch.stack([logprob for action, logprob in agent.policy_map.values()])
+                # agent.policy_map[:, i]
 
                 ret = compute_discounted_return(agent_rewards.detach(), gamma=gamma)
 
@@ -122,7 +124,7 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
                 loss += -torch.sum(logprobs) * advantage
             loss = loss / batch_size
             agents_episode_losses.append(loss)
-            agents_episode_returns.append(torch.mean(torch.stack(all_agent_returns[i])).item())
+            agents_episode_returns.append(torch.mean(torch.stack(all_agent_returns[i])).cpu().item())
 
         # Backprop and update
         for i, (optimizer, loss) in enumerate(zip(independent_optimizers, agents_episode_losses)):
@@ -132,7 +134,7 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
             agents_losses[i].append(loss.item())
             agents_returns[i].append(agents_episode_returns[i])
 
-        episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
+        episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).cpu().item())
         if debug:
             # all_agents_flat_grads = []
             print(f"############################")
@@ -160,7 +162,7 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
                 print("#############################")
                 print("")
 
-    last_episode_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(potentials)]
+    last_episode_discounted_potentials = [(gamma ** t) * p.cpu().item() for t, p in enumerate(potentials)]
     return agents_losses, episode_potential_sums, last_episode_discounted_potentials, actions, agents_returns
 
 
@@ -273,6 +275,8 @@ if __name__ == '__main__':
     import matplotlib
     matplotlib.use('TkAgg')
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     num_agents = 3
     state_dim = 3
     action_dim = state_dim
@@ -285,11 +289,12 @@ if __name__ == '__main__':
 
 
     aug_dim = history_len + 1
-    init_states_tuple = (1, 0, 1, 2, 0)
+    init_states_tuple = torch.tensor([1, 0, 1, 2, 0], device=device)
 
     overwrite_optimal_policy = False
 
     agents = []
+
 
     for i in range(num_agents):
         init_state = init_states_tuple[i]
@@ -298,7 +303,13 @@ if __name__ == '__main__':
                                      embedding_dim=max(1, aug_dim // 2) * state_dim,
                                      hidden_dim=action_dim,
                                      num_actions=action_dim)
-        agent = EpisodicAgent(state_dim, action_dim, policy_func=policy, init_state=init_state)
+        policy.to(device)
+        agent = EpisodicAgent(state_dim=state_dim,
+                              action_dim=action_dim,
+                              history_length=history_len,
+                              policy_func=policy,
+                              init_state=init_state,
+                              device=device)
         agents.append(agent)
 
     ecg = EpisodicCongestionGame(agents=agents,
@@ -306,7 +317,8 @@ if __name__ == '__main__':
                                  g_func=g_func,
                                  u_func=make_u_i(state_dim),
                                  history_len=history_len,
-                                 episode_len=episode_len)
+                                 episode_len=episode_len,
+                                 device=device)
 
     policy_path = f'optimal_policies/{num_agents}_agents_{state_dim}_states_{action_dim}_actions_gamma_{gamma}'
     if os.path.exists(policy_path) or overwrite_optimal_policy:

@@ -16,7 +16,7 @@ def evaluate_policy(agents, policy, reward_fn, gamma=0.99, episode_len=20):
 
     rewards = []
 
-    joint_state = tuple(agent.state[0] for agent in agents)
+    joint_state = tuple(agent.state.cpu().item() for agent in agents)
     for t in range(episode_len):
         if joint_state not in policy:
             break  # End of policy coverage or absorbing state
