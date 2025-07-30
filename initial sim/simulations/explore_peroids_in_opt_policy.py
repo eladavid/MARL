@@ -28,6 +28,7 @@ import matplotlib.pyplot as plt
 
 
 def visualize_joint_mdp(policy_induced_transition_prob):
+    plt.figure()
     # Initialize a directed graph
     G = nx.DiGraph()
 
@@ -53,7 +54,7 @@ def visualize_joint_mdp(policy_induced_transition_prob):
     nx.draw_networkx_edges(G, pos, arrowstyle="->", arrowsize=20, connectionstyle="arc3,rad=0.1")
 
     plt.title("Joint State-Action MDP Visualization")
-    plt.show()
+    plt.show(block=False)
 
 def build_policy_induced_mdp_graph(policy_induced_transition_prob):
     # Initialize a directed graph
@@ -123,9 +124,9 @@ if __name__ == "__main__":
     random.seed(42)
     np.random.seed(42)
 
-    num_agents_list = [7]
+    num_agents_list = [2]
     num_states_list = [2]
-    num_actions_list = [2]
+    num_actions_list = [3]
 
     for num_agents, num_states, num_actions in zip(num_agents_list, num_states_list, num_actions_list):
         print(f"running for {num_agents} agents, {num_states} states")

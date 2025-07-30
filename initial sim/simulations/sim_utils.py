@@ -1,9 +1,11 @@
 import itertools
-from typing import List, Dict, Set, Sequence, Any
+from typing import List, Dict, Set, Sequence, Any, Optional
 import numpy as np
 import copy
 from itertools import product
 import networkx as nx
+import math
+from tqdm import tqdm
 
 from RL_utils import calc_policy_gap
 from graph_utils import find_nash_equilibrium_nodes, compute_nash_convergence
@@ -170,20 +172,37 @@ class MultiAgent:
         return policies
 
     @staticmethod
-    def get_all_buffered_deterministic_policies(states: Sequence, actions: Sequence, buffer_size: int = 2):
+    def get_buffered_decoupled_policies(states: Sequence, actions: Sequence, buffer_size: int = 2):
         joint_states = [s for s in states]
-        last_joint_states_in_buffer = list(set([s[-1] for s in joint_states]))
-        joint_actions = [a for a in actions]
+
+        # buffer size = 1, should not have state tuple for history
+        if not MultiAgent.is_tuple_of_tuples(joint_states[0]):
+            last_joint_states_in_buffer = joint_states
+
+        else:
+            last_joint_states_in_buffer = list(set([s[-1] for s in joint_states]))
+        joint_actions = [list(a) for a in actions]
         policies = []
 
-        for action_permutation in product(joint_actions, repeat=len(last_joint_states_in_buffer)):
-            # repeat the same action permutation for states with similar last state (in the power of state buffer)
-            action_permutation = tuple(
-                a for _ in range(len(last_joint_states_in_buffer) ** (buffer_size - 1))
-                for a in action_permutation
-            )
-            policy = dict(zip(joint_states, action_permutation))
-            policies.append(policy)
+        partitions = []
+        num_agents = len(last_joint_states_in_buffer[0])
+        for agent_idx in range(num_agents):
+            partitions.append(MultiAgent.get_joint_states_partition_for_agent(joint_states, agent_idx))
+
+        single_agent_actions = [list(set([a[i] for a in joint_actions])) for i in range(num_agents)]
+        # prepare all permuations of actions along single agents states (state are generalized, i.e., include the buffer information)
+        single_agent_permutations = [product(single_agent_actions[i], repeat=len(partitions[i].keys())) for i in range(num_agents)]
+
+        # iterate over the cartesian product of all agent permutations
+        for joint_action_permutation in product(*single_agent_permutations):
+            joint_actions_for_policy = np.zeros((math.prod([len(tup) for tup in joint_action_permutation]), num_agents), dtype=int)
+            for agent_idx in range(num_agents):
+                agent_i_action = joint_action_permutation[agent_idx]
+                for i, indices in enumerate(partitions[agent_idx].values()):
+                    joint_actions_for_policy[indices, agent_idx] = agent_i_action[i]
+
+            new_policy = dict(zip(joint_states, list(map(tuple, joint_actions_for_policy))))
+            policies.append(new_policy)
 
         return policies
 
@@ -234,6 +253,27 @@ class MultiAgent:
             new_joint_action[agent_idx] = single_agent_policy[joint_state]
             new_joint_agent_policy[joint_state] = tuple(new_joint_action)
         return new_joint_agent_policy
+
+    def get_all_buffered_single_agent_policy_alternatives(self, joint_policy, agent_idx, partitions):
+        # suggest all single agent's permutations:
+        joint_actions = self.get_joint_actions()
+        single_agent_actions = list(set([a[agent_idx] for a in joint_actions]))
+        single_agent_permutations = product(single_agent_actions, repeat=len(partitions[agent_idx].keys()))
+
+        buff_joint_states = list(joint_policy.keys())
+        buff_joint_actions = list(joint_policy.values())
+        policies = []
+        for single_agent_action_perm in single_agent_permutations:
+            # copy the orig policy
+            alt_joint_actions = np.array(buff_joint_actions)
+            # override the actions
+            for i, indices in enumerate(partitions[agent_idx].values()):
+                alt_joint_actions[indices, agent_idx] = single_agent_action_perm[i]
+
+            new_policy = dict(zip(buff_joint_states, list(map(tuple, alt_joint_actions))))
+            if new_policy != joint_policy:
+                policies.append(new_policy)
+        return policies
 
     def get_all_single_agent_policy_alternatives(self, joint_policy, agent_idx):
         # TODO - write test
@@ -507,9 +547,39 @@ class MultiAgent:
                 break
         return decoupled_policy, agent_i_decoupled_value_function
 
+    def initialize_decoupled_value_function(self, joint_policy, use_for_global_value_calc, mem_buffer_size):
+        joint_states = list(joint_policy.keys())
+        num_states = len(joint_states)
+        decoupled_value_function = [np.zeros(num_states) for _ in
+                                    self.agents] if not use_for_global_value_calc else [np.zeros(num_states)]
+        if mem_buffer_size == 1:
+            return decoupled_value_function
+        else:
+            for state_index, joint_state in enumerate(joint_states):
+                # assuming determisitic mapping from state to action
+                past_actions = joint_state[1:]
+                if not use_for_global_value_calc:
+                    # calc the partial reward per agent along all the buffer
+                    single_agent_rewards = [
+                        sum([(self.gamma ** i) * self._multi_agent_reward.get_single_agent_reward(agent_idx, j_s, j_a)
+                         for i, (j_s, j_a) in enumerate(zip(joint_state[:-1], past_actions))])
+                        for agent_idx, _ in enumerate(self.agents)]
+                else:
+                    single_agent_rewards = [
+                        sum([(self.gamma ** i) * self._multi_agent_reward.get_reward(j_s, j_a) for i, (j_s, j_a) in
+                         enumerate(zip(joint_state[:-1], past_actions))])]
+                for single_agent_v, single_agent_reward in zip(decoupled_value_function, single_agent_rewards):
+                    single_agent_v[state_index] = single_agent_reward
+        return decoupled_value_function
+
+    @staticmethod
+    def is_tuple_of_tuples(variable):
+        return isinstance(variable, tuple) and all(isinstance(item, tuple) for item in variable)
+
     def calc_decoupled_value_function(self,
                                       joint_policy: Dict[Any, Any],
-                                      theta: float = 1e-6) -> List[np.ndarray]:
+                                      theta: float = 1e-6,
+                                      use_for_global_value_calc: bool = False) -> List[np.ndarray]:
         # TODO - write test
 
         """
@@ -524,37 +594,100 @@ class MultiAgent:
                 callable(getattr(self._multi_agent_reward, 'get_single_agent_reward'))):
             raise AttributeError("The reward function does not have the required 'get_single_agent_reward'.")
 
-        num_states = self.state_space_size
-        decoupled_value_function = [np.zeros(num_states) for _ in self.agents]
+        # extract mem buffer size assuming same size for all states...
+        states_list = list(joint_policy.keys())
+        joint_state_example = states_list[0]
+        if self.is_tuple_of_tuples(joint_state_example):
+            mem_buffer_size = len(joint_state_example)
+            num_states = len(states_list)
+        else:
+            mem_buffer_size = 1
+            num_states = self.state_space_size
+
+        # # initialize value functions according to memory buffer
+        # decoupled_value_function = self.initialize_decoupled_value_function(joint_policy, use_for_global_value_calc, mem_buffer_size)
+        decoupled_value_function = [np.zeros(num_states) for _ in
+                                    self.agents] if not use_for_global_value_calc else [np.zeros(num_states)]
 
         while True:
             delta = [0 for _ in range(len(decoupled_value_function))]
-            for state_index in range(num_states):
-                joint_state = self.index_to_state(state_index)
 
-                # apply policy at current state
-                joint_action = joint_policy[joint_state]
+            for state_index, (joint_state, joint_action) in enumerate(joint_policy.items()):
+                # make sure states are stored in list so common calc can go for both regular and mem buffered states
+                if mem_buffer_size == 1:
+                    joint_state = [joint_state]
+                    joint_action = [joint_action]
+                else:
+                    joint_state = list(joint_state)
+                    last_action = joint_action
+                    joint_action = [s for s in joint_state[1:]]
+                    joint_action.append(last_action)
 
-                # calc the partial reward per agent
-                single_agent_rewards = [self._multi_agent_reward.get_single_agent_reward(agent_idx,
-                                                                                         joint_state,
-                                                                                         joint_action)
-                                        for agent_idx, _ in enumerate(self.agents)]
+                if not use_for_global_value_calc:
+                    # single_agent_rewards = [
+                    #     sum([(self.gamma ** i) * self._multi_agent_reward.get_single_agent_reward(agent_idx, j_s, j_a)
+                    #          for i, (j_s, j_a) in enumerate(zip(joint_state, joint_action))])
+                    #     for agent_idx, _ in enumerate(self.agents)]
+                    single_agent_rewards = [self._multi_agent_reward.get_single_agent_reward(agent_idx,
+                                                                                             joint_state[-1],
+                                                                                             joint_action[-1])
+                                            for agent_idx, _ in enumerate(self.agents)]
+                else:
+                    # single_agent_rewards = [
+                    #     sum([(self.gamma ** i) * self._multi_agent_reward.get_reward(j_s, j_a) for i, (j_s, j_a) in
+                    #          enumerate(zip(joint_state, joint_action))])]
+                    single_agent_rewards = [self._multi_agent_reward.get_reward(joint_state[-1], joint_action[-1])
+                                             for agent_idx, _ in enumerate(self.agents)]
 
-                next_joint_state_probs = self.get_joint_transition_prob(joint_state, joint_action)
+
+                prob_vectors = [self.get_joint_transition_prob(joint_state[i], joint_state[i+1]) for i in range(len(joint_state) - 1)]
+                prob_vectors.append(self.get_joint_transition_prob(joint_state[-1], joint_action[-1]))
+                next_joint_state_probs = self.multi_step_transition_prob(prob_vectors)
 
                 # update V estimate
                 for i, (single_agent_v, curr_reward) in enumerate(zip(decoupled_value_function, single_agent_rewards)):
                     prev_v_estimate = single_agent_v[state_index]
 
                     # update current V estimate
-                    single_agent_v[state_index] = sum(next_joint_state_probs * (curr_reward + self.gamma * single_agent_v))
+                    single_agent_v[state_index] = np.dot(next_joint_state_probs,
+                                                         curr_reward + self.gamma * single_agent_v)
 
                     # update max difference between iterations
                     delta[i] = max(delta[i], abs(prev_v_estimate - single_agent_v[state_index]))
-            if max(delta) < theta:
+            if np.max(delta) < theta:
                 break
         return decoupled_value_function
+
+    @staticmethod
+    def multi_step_transition_prob(prob_vectors):
+        """
+        Compute the multi-step transition probability representation.
+
+        :param prob_vectors: List of k probability vectors, each of length n
+        :return: Flattened probability vector of size n^k
+        """
+        result = np.array(prob_vectors[0])  # Start with first probability vector
+        for vec in prob_vectors[1:]:
+            result = np.outer(result, vec).flatten()  # Compute outer product and flatten
+
+        return result
+
+    @staticmethod
+    def calc_mean_buffered_value_function(buffered_policy, buffered_value_function):
+        def get_indices_with_same_last_state(states):
+            from collections import defaultdict
+            groups = defaultdict(list)
+
+            # Iterate and group indices
+            for idx, tup in enumerate(states):
+                groups[tup[-1]].append(idx)
+
+            # Convert to list of lists
+            result = list(groups.values())
+            return result
+        # average along state with same last state across different past buffers
+        indices = get_indices_with_same_last_state(list(buffered_policy.keys()))
+        return buffered_value_function[indices].mean(axis=1)
 
     def calc_optimality_gap(self, alt_policy):
         # if optimal policy is not known - calculate it
@@ -643,12 +776,13 @@ class MultiAgent:
 
         nash_policies = []
         joint_states = self.get_joint_states()
-        policies_list = self.get_all_deterministic_policies(states=joint_states,
-                                                            actions=self.get_joint_actions())
+        if not use_agent_decoupled_policies_only:
+            policies_list = self.get_all_deterministic_policies(states=joint_states,
+                                                                actions=self.get_joint_actions())
         # include only agent decoupled policies
-        if use_agent_decoupled_policies_only:
-            policies_list = self.get_agent_decoupled_policies(policies_list)
-
+        else:
+            # policies_list = self.get_agent_decoupled_policies(policies_list)
+            policies_list = self.get_buffered_decoupled_policies(joint_states, self.get_joint_actions(), buffer_size=1)
         # create policy dict
         policies_dict = {
             self.get_policy_string_name(policy_dict): policy_dict
@@ -658,27 +792,17 @@ class MultiAgent:
 
         # calc once value function per policy
         policies_value_functions = {
-            policy_number: self.calc_decoupled_value_function(policy, theta=1e-8)
-            for policy_number, policy in policies_dict.items()
+            policy_number: self.calc_decoupled_value_function(policy, theta=1e-6)
+            for policy_number, policy in tqdm(policies_dict.items())
         }
 
         # if checking only agent-decoupled policies - nash definition changes as same action must be applied along all
         #                                             states with same "single agent marginal state"
         # thus, we calculate mean value function across all such states, which stands for assuming uniform initial state distribution
         if use_agent_decoupled_policies_only:
-            def get_joint_states_partition_for_agent(joint_states, agent_idx):
-                from collections import defaultdict
-
-                # find which states should be "mean"ed
-                partition = defaultdict(list)
-                for index, tup in enumerate(joint_states):
-                    value = tup[agent_idx]
-                    partition[value].append(index)
-                return partition
-
             partitions = []
             for agent_idx in range(self.num_agents):
-                partitions.append(get_joint_states_partition_for_agent(joint_states, agent_idx))
+                partitions.append(self.get_joint_states_partition_for_agent(joint_states, agent_idx))
 
             def calc_single_agent_decoupled_policy_expected_value_func(all_agents_partitions, value_function, agent_idx):
                 agent_partition = all_agents_partitions[agent_idx]
@@ -703,22 +827,22 @@ class MultiAgent:
             # check if satisfies Nash condition on agent_idx coordinate
             for agent_idx, agent in enumerate(self.agents):
                 # perform all possible single-agent policy alternatives and check value functions
-                agent_i_alt_policies = self.get_all_single_agent_policy_alternatives(policy, agent_idx)
-
-                # inject the single agent alternative into the joint policy
-                alt_joint_policies = [self.inject_single_agent_policy_into_joint_policy(policy, agent_idx, sap)
-                                      for sap in agent_i_alt_policies]
-
-                # filter only agent decoupled policies
                 if use_agent_decoupled_policies_only:
-                    alt_joint_policies = [p for p in alt_joint_policies if p in policies_dict.values()]
+                    alt_joint_policies = self.get_all_buffered_single_agent_policy_alternatives(policy, agent_idx,
+                                                                                                    partitions)
+                else:
+                    agent_i_alt_policies = self.get_all_single_agent_policy_alternatives(policy, agent_idx)
+
+                    # inject the single agent alternative into the joint policy
+                    alt_joint_policies = [self.inject_single_agent_policy_into_joint_policy(policy, agent_idx, sap)
+                                          for sap in agent_i_alt_policies]
 
                 # calculate alt policies value functions
                 alt_policies_value_functions = [policies_value_functions[self.get_policy_string_name(alt_joint_policy)]
                                                 for alt_joint_policy in alt_joint_policies]
 
                 # check if optimal for agent i
-                is_optimal_for_agent_i = np.all([agents_value_functions[agent_idx] + 1e-6 >= alt_policy_value_functions[agent_idx]
+                is_optimal_for_agent_i = np.all([agents_value_functions[agent_idx].mean() + 1e-6 >= alt_policy_value_functions[agent_idx].mean()
                                                  for alt_policy_value_functions in alt_policies_value_functions])
 
                 # if not optimal for any agent - not nash
@@ -789,13 +913,32 @@ class MultiAgent:
         return nash_convegence_graph
 
     @staticmethod
+    # def get_policy_string_name(policy):
+    #     joint_values = [v for v in policy.values()]
+    #     p_name = ''.join(str(x) for values in joint_values for x in values)
+    #     p_number = int(p_name, base=2)
+    #     return p_number
     def get_policy_string_name(policy):
-        joint_values = [v for v in policy.values()]
-        p_name = ''.join(f"{x}{y}" for x, y in joint_values)
-        p_number = int(p_name, base=2)
-        return p_number
+        joint_values = tuple(tuple(v) for v in policy.values())  # Ensure hashability
+        return hash(joint_values)
 
-    def find_buffered_decoupled_dynamic_nash_policies(self, buffer_size: int = 2):
+    @staticmethod
+    def get_joint_states_partition_for_agent(joint_states, agent_idx):
+        from collections import defaultdict
+
+        # find which states should be "mean"ed
+        partition = defaultdict(list)
+        for index, tup in enumerate(joint_states):
+            if MultiAgent.is_tuple_of_tuples(tup):
+                multi_step_state = list(tup)
+                value = tuple([s[agent_idx] for s in multi_step_state])
+            else:
+                value = tup[agent_idx]
+            # value = tup[agent_idx]
+            partition[value].append(index)
+        return partition
+
+    def find_buffered_decoupled_dynamic_nash_policies(self, buffer_size: int = 2, precalculated_value_functions_dict = None):
         # TODO - write test
         # TODO - optimize
         """
@@ -810,15 +953,16 @@ class MultiAgent:
 
         nash_policies = []
         # span the buffered state & action space
-        joint_buffered_states = list(itertools.product(self.get_joint_states(), repeat=2))
+        joint_buffered_states = list(itertools.product(self.get_joint_states(), repeat=buffer_size)) if buffer_size > 1 else self.get_joint_states()
 
-        policies_list = self.get_all_buffered_deterministic_policies(
-            states=joint_buffered_states,
-            actions=self.get_joint_actions(),
-            buffer_size=buffer_size,
-        )
-        # include only agent decoupled policies
-        policies_list = self.get_agent_decoupled_policies(policies_list, use_buffered_states=True)
+        if buffer_size > 1:
+            policies_list = self.get_buffered_decoupled_policies(
+                states=joint_buffered_states,
+                actions=self.get_joint_actions(),
+                buffer_size=buffer_size,
+            )
+        else:
+            policies_list = self.get_agent_decoupled_policies(self.get_all_deterministic_policies(joint_buffered_states, self.get_joint_actions()))
 
         # create policy dict
         policies_dict = {
@@ -829,34 +973,29 @@ class MultiAgent:
 
         # TODO - perform all the buffered calculation...
 
-        # calc once value function per policy
-        policies_value_functions = {
-            policy_number: self.calc_decoupled_value_function(policy, theta=1e-8)
-            for policy_number, policy in policies_dict.items()
-        }
+        if precalculated_value_functions_dict is None:
+            # calc once value function per policy
+            policies_value_functions = {
+                policy_number: self.calc_decoupled_value_function(policy, theta=1e-6)
+                for policy_number, policy in tqdm(policies_dict.items())
+            }
+        else:
+            policies_value_functions = {
+                policy_number: value_function for policy_number, value_function in precalculated_value_functions_dict.items()
+            }
 
         # if checking only agent-decoupled policies - nash definition changes as same action must be applied along all
         #                                             states with same "single agent marginal state"
         # thus, we calculate mean value function across all such states, which stands for assuming uniform initial state distribution
-        def get_joint_states_partition_for_agent(joint_states, agent_idx):
-            from collections import defaultdict
-
-            # find which states should be "mean"ed
-            partition = defaultdict(list)
-            for index, tup in enumerate(joint_states):
-                value = tup[agent_idx]
-                partition[value].append(index)
-            return partition
-
         partitions = []
         for agent_idx in range(self.num_agents):
-            partitions.append(get_joint_states_partition_for_agent(joint_buffered_states, agent_idx))
+            partitions.append(self.get_joint_states_partition_for_agent(joint_buffered_states, agent_idx))
 
         def calc_single_agent_decoupled_policy_expected_value_func(all_agents_partitions, value_function, agent_idx):
             agent_partition = all_agents_partitions[agent_idx]
             meaned_value_function = np.zeros(len(agent_partition.keys()))
-            for key, indices in agent_partition.items():
-                meaned_value_function[key] = value_function[indices].mean()  # Compute mean over indices in the partition
+            for idx, indices in enumerate(agent_partition.values()):
+                meaned_value_function[idx] = value_function[indices].mean()  # Compute mean over indices in the partition
             return meaned_value_function
 
         for agents_decoupled_value_functions in policies_value_functions.values():
@@ -875,21 +1014,14 @@ class MultiAgent:
             # check if satisfies Nash condition on agent_idx coordinate
             for agent_idx, agent in enumerate(self.agents):
                 # perform all possible single-agent policy alternatives and check value functions
-                agent_i_alt_policies = self.get_all_single_agent_policy_alternatives(policy, agent_idx)
-
-                # inject the single agent alternative into the joint policy
-                alt_joint_policies = [self.inject_single_agent_policy_into_joint_policy(policy, agent_idx, sap)
-                                      for sap in agent_i_alt_policies]
-
-                # filter only agent decoupled policies
-                alt_joint_policies = [p for p in alt_joint_policies if p in policies_dict.values()]
+                alt_joint_policies = self.get_all_buffered_single_agent_policy_alternatives(policy, agent_idx, partitions)
 
                 # calculate alt policies value functions
                 alt_policies_value_functions = [policies_value_functions[self.get_policy_string_name(alt_joint_policy)]
                                                 for alt_joint_policy in alt_joint_policies]
 
                 # check if optimal for agent i
-                is_optimal_for_agent_i = np.all([agents_value_functions[agent_idx] + 1e-6 >= alt_policy_value_functions[agent_idx]
+                is_optimal_for_agent_i = np.all([agents_value_functions[agent_idx].mean() + 1e-6 >= alt_policy_value_functions[agent_idx].mean()
                                                  for alt_policy_value_functions in alt_policies_value_functions])
 
                 # if not optimal for any agent - not nash
@@ -901,6 +1033,61 @@ class MultiAgent:
                 nash_policies.append(policy)
 
         return nash_policies
+
+    def calc_buffered_value_functions_all_policies(self, buffer_size: int = 2):
+        # Verify that 'reward_obj' has the required function
+        if not (hasattr(self._multi_agent_reward, 'get_single_agent_reward') and
+                callable(getattr(self._multi_agent_reward, 'get_single_agent_reward'))):
+            raise AttributeError("The reward function does not have the required 'get_single_agent_reward'.")
+
+        nash_policies = []
+        # span the buffered state & action space
+        joint_buffered_states = list(itertools.product(self.get_joint_states(), repeat=2))
+
+        policies_list = self.get_buffered_decoupled_policies(
+            states=joint_buffered_states,
+            actions=self.get_joint_actions(),
+            buffer_size=buffer_size,
+        )
+
+        # create policy dict
+        policies_dict = {
+            self.get_policy_string_name(policy_dict): policy_dict
+            for policy_dict
+            in policies_list
+        }
+
+        # TODO - perform all the buffered calculation...
+        # calc once value function per policy
+        from tqdm import tqdm
+        policies_value_functions = {
+            policy_number: self.calc_decoupled_value_function(policy, theta=1e-8, use_for_global_value_calc=True)
+            for policy_number, policy in tqdm(policies_dict.items())
+        }
+
+        # if checking only agent-decoupled policies - nash definition changes as same action must be applied along all
+        #                                             states with same "single agent marginal state"
+        # thus, we calculate mean value function across all such states, which stands for assuming uniform initial state distribution
+        #partitions = []
+        #for agent_idx in range(self.num_agents):
+        #    partitions.append(self.get_joint_states_partition_for_agent(joint_buffered_states, agent_idx))
+
+        #def calc_single_agent_decoupled_policy_expected_value_func(all_agents_partitions, value_function, agent_idx):
+        #    agent_partition = all_agents_partitions[agent_idx]
+        #    meaned_value_function = np.zeros(len(agent_partition.keys()))
+        #    for idx, indices in enumerate(agent_partition.values()):
+        #        meaned_value_function[idx] = value_function[
+        #            indices].mean()  # Compute mean over indices in the partition
+        #    return meaned_value_function
+
+        #for agents_decoupled_value_functions in policies_value_functions.values():
+        #    for i, value_function in enumerate(agents_decoupled_value_functions):
+        #        meand_value_function = calc_single_agent_decoupled_policy_expected_value_func(partitions,
+        #                                                                                      value_function,
+        #                                                                                      agent_idx=i)
+        #        agents_decoupled_value_functions[i] = meand_value_function
+
+        return policies_dict, policies_value_functions
 
 
 class MultiAgentSimulation:

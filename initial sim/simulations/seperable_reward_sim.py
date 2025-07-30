@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # collect optimality gap stats for each sim
     nash_policies_opt_gaps_per_sim = []
 
-    n_sim = 1000
+    n_sim = 500
     for i_sim in range(n_sim):
         g_vals = np.random.uniform(low=0, high=1, size=4)
         u1_vals = np.random.uniform(low=0, high=1, size=4)
@@ -123,8 +123,9 @@ if __name__ == "__main__":
         #                       for p in all_policies]
 
         # all_normalized_value_funcs = [normalize_value_function(simulation.multi_agent.calc_value_function(p)) for p in all_policies]
-        # nash_policies = simulation.multi_agent.find_dynamic_nash_policies()
-        buff_nash = simulation.multi_agent.find_buffered_decoupled_dynamic_nash_policies(buffer_size=2)
+        nash_policies = simulation.multi_agent.find_dynamic_nash_policies()
+        #buff_nash = simulation.multi_agent.find_buffered_decoupled_dynamic_nash_policies(buffer_size=2)
+        buff_policies, all_vs = simulation.multi_agent.calc_buffered_meaned_value_functions_all_policies(buffer_size=2)
         # TODO - write functions for max global welfare find?
 
         nash_policies_joint_value_funcs = [simulation.multi_agent.calc_value_function(joint_policy=n_p) for n_p in nash_policies]
@@ -139,24 +140,26 @@ if __name__ == "__main__":
             'sim_idx': i_sim,
             'simulation': simulation,
             'nash_policies': nash_policies,
+            'buff_policies': buff_policies,
+            'buff_policies_values': all_vs,
             'nash_policies_decoupled_value_funcs': nash_policies_decoupled_value_funcs,
             'nash_policies_joint_value_funcs': nash_policies_joint_value_funcs,
             'nash_opt_gaps': nash_opt_gaps
         }
 
         if len(nash_policies) == 0:
-            fname = os.path.join(os.getcwd(), '../sim_res/no_nash', f"sim_{i_sim}_no_nash.pkl")
+            fname = os.path.join(os.getcwd(), '../sim_res/buff/no_nash', f"sim_{i_sim}_no_nash.pkl")
             print(f"found game with no nash! saving {fname}")
             with open(fname, "wb") as f:
                 pickle.dump(data_dict, f)
 
         elif simulation.multi_agent.optimal_policy not in nash_policies:
-            fname = os.path.join(os.getcwd(), '../sim_res/global_is_not_nash', f"sim_{i_sim}_global_is_not_nash.pkl")
+            fname = os.path.join(os.getcwd(), '../sim_res/buff/global_is_not_nash', f"sim_{i_sim}_global_is_not_nash.pkl")
             print(f"Eureka! a game with non-Nash global optimum! saving {fname}")
             with open(fname, "wb") as f:
                 pickle.dump(data_dict, f)
         else:
-            fname = os.path.join(os.getcwd(), '../sim_res/regular', f"sim_{i_sim}_regular.pkl")
+            fname = os.path.join(os.getcwd(), '../sim_res/buff/regular', f"sim_{i_sim}_regular.pkl")
             print(f"regular sim! saving {fname}")
             with open(fname, "wb") as f:
                 pickle.dump(data_dict, f)

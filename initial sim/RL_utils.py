@@ -47,3 +47,15 @@ def calc_per_state_policy_gap(policy1_value_function, policy2_value_function):
 
 def calc_policy_gap(policy1_value_function, policy2_value_function):
     return max(calc_per_state_policy_gap(policy1_value_function, policy2_value_function))
+
+
+def calc_mean_policy_gap(policy1_value_function, policy2_value_function):
+    return np.mean(calc_per_state_policy_gap(policy1_value_function, policy2_value_function))
+
+def calc_mean_normalized_policy_gap(policy1_value_function, policy2_value_function):
+    per_state_gaps = calc_per_state_policy_gap(policy1_value_function, policy2_value_function)
+    normalized_gaps = [g / v for g, v in zip(per_state_gaps, policy1_value_function)]
+    return np.mean(normalized_gaps)
+
+def calc_min_policy_gap(policy1_value_function, policy2_value_function):
+    return np.min(calc_per_state_policy_gap(policy1_value_function, policy2_value_function))
