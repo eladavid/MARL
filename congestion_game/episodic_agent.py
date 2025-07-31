@@ -15,15 +15,25 @@ class EpisodicAgent:
     def start_new_episode(self):
         self.policy_map = {}  # clear old mappings
 
-    def act(self, augmented_state):
+    def act(self, augmented_state, use_episodic_freeze: bool = False):
         state_key = tuple(augmented_state)
         if state_key not in self.policy_map:
             probs = self.policy_func(torch.tensor(augmented_state))
             dist = torch.distributions.Categorical(probs)
             action = dist.sample()
             log_prob = dist.log_prob(action)
-            self.policy_map[state_key] = action, log_prob
-        return self.policy_map[state_key]
+            if use_episodic_freeze:
+                self.policy_map[state_key] = action, log_prob
+        else:
+            action, log_prob = self.policy_map[state_key]
+        return action, log_prob
+
+    def argmax_inference(self, augmented_state):
+        probs = self.policy_func(torch.tensor(augmented_state))
+        dist = torch.distributions.Categorical(probs)
+        action = torch.argmax(probs)
+        log_prob = dist.log_prob(action)
+        return action, log_prob
 
     def update_state(self, new_state):
         self.history.append(self.state.copy())
@@ -36,8 +46,3 @@ class EpisodicAgent:
             past = self.history[-history_len:] if len(self.history) >= history_len else \
                    [np.zeros_like(self.state)] * (history_len - len(self.history)) + self.history
             return np.concatenate(past + [self.state])
-
-
-def discretize_state(state, bins=10):
-    """Simple discretizer for continuous state"""
-    return tuple(np.floor(state * bins).astype(int))

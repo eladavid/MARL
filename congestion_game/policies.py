@@ -63,3 +63,29 @@ class DiscreteStatePolicy(nn.Module):
         logits = self.fc(x)
         probs = torch.softmax(logits, dim=-1)
         return probs
+
+class DiscreteStatePolicyNoEmbeddings(nn.Module):
+    def __init__(self, state_vocab_sizes, hidden_dim, num_actions):
+        super().__init__()
+        self.state_vocab_sizes = state_vocab_sizes
+        self.total_input_dim = sum(state_vocab_sizes)  # from all one-hots
+
+        self.fc = nn.Sequential(
+            nn.Linear(self.total_input_dim, num_actions)
+        )
+
+        # Optional: make initial output uniform
+        nn.init.constant_(self.fc[0].weight, 0.0)
+        nn.init.constant_(self.fc[0].bias, 0.0)
+
+    def forward(self, state_vector):
+        # state_vector shape: (batch_size, state_dim)
+        # One-hot encode each dimension
+        one_hots = [
+            torch.nn.functional.one_hot(state_vector[i], num_classes=vocab_size).float()
+            for i, vocab_size in enumerate(self.state_vocab_sizes)
+        ]
+        x = torch.cat(one_hots, dim=-1)  # Shape: (batch_size, total_input_dim)
+        logits = self.fc(x)
+        probs = torch.softmax(logits, dim=-1)
+        return probs

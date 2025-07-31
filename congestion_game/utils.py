@@ -14,7 +14,7 @@ def evaluate_policy(agents, policy, reward_fn, gamma=0.99, episode_len=20):
     total_reward = 0.0
     discount = 1.0
 
-    rewards = []
+    discounted_rewards = []
 
     joint_state = tuple(agent.state[0] for agent in agents)
     for t in range(episode_len):
@@ -24,13 +24,13 @@ def evaluate_policy(agents, policy, reward_fn, gamma=0.99, episode_len=20):
         joint_action = policy[joint_state]
         r = reward_fn(torch.tensor(joint_state), torch.tensor(joint_action))
         total_reward += discount * r
-        rewards.append(discount * r)
+        discounted_rewards.append(discount * r)
 
         discount *= gamma
 
         joint_state = tuple([a for a in joint_action])  # deterministic transition
 
-    return total_reward, rewards
+    return total_reward, discounted_rewards
 
 
 def visualize_joint_mdp(policy_induced_transition_prob):

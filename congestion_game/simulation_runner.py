@@ -7,14 +7,16 @@ import pickle as pkl
 
 from congestion_game.episodic_agent import EpisodicAgent
 from congestion_game.episodic_congestion_game import EpisodicCongestionGame
-from congestion_game.policies import make_linear_softmax_policy, AgentPolicy, DiscreteStatePolicy
-from congestion_game.reward_functions import g_func, make_u_i, make_potential_func
+from congestion_game.policies import make_linear_softmax_policy, AgentPolicy, DiscreteStatePolicy, \
+    DiscreteStatePolicyNoEmbeddings
+from congestion_game.reward_functions import g_func, make_u_i, make_potential_func, make_random_g_func, \
+    make_random_u_funcs
 import torch.optim as optim
 
 from congestion_game.utils import evaluate_policy, visualize_joint_mdp
 
 
-def compute_discounted_return(rewards: torch.Tensor, gamma: float) -> torch.Tensor:
+def compute_discounted_returns(rewards: torch.Tensor, gamma: float) -> torch.Tensor:
     """
     Computes the discounted return for a single trajectory.
 
@@ -25,9 +27,14 @@ def compute_discounted_return(rewards: torch.Tensor, gamma: float) -> torch.Tens
     Returns:
         torch.Tensor: Scalar tensor with the total discounted return.
     """
-    T = rewards.shape[0]
-    discounts = gamma ** torch.arange(T, dtype=rewards.dtype, device=rewards.device)
-    return torch.sum(rewards * discounts)
+    returns = torch.zeros_like(rewards)
+    # R = torch.zeros((rewards.shape[1],), device=rewards.device)
+    R = torch.tensor(0)
+    for t in reversed(range(rewards.shape[0])):
+        R = rewards[t] + gamma * R
+        returns[t] = R
+
+    return returns
 
 
 def find_joint_optimum(num_agents, num_states, num_actions, joint_reward_func, gamma=0.99, theta: float = 1e-1):
@@ -78,7 +85,11 @@ def run_simulation(env, steps):
     return np.stack(all_actions), np.stack(all_rewards)
 
 
-def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: int = 1, debug: bool = True):
+def train(env: EpisodicCongestionGame,
+          num_episodes: int,
+          batch_size: int = 1,
+          use_baseline: bool = False,
+          debug: bool = True):
     # Set optimizers
     independent_optimizers = []
     for i, agent in enumerate(env.agents):
@@ -100,17 +111,23 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
 
             for i, agent in enumerate(env.agents):
                 agent_rewards = torch.stack([step_reward[i] for step_reward in rewards])
-                agent_logprobs = torch.stack([logprob for action, logprob in agent.policy_map.values()])
-
-                ret = compute_discounted_return(agent_rewards.detach(), gamma=gamma)
+                if use_episodic_freeze:
+                    agent_logprobs = torch.stack([logprob for action, logprob in agent.policy_map.values()])
+                else:
+                    agent_logprobs = torch.stack([step_logprobs[i] for step_logprobs in logprobs])
+                returns = compute_discounted_returns(agent_rewards.detach(), gamma=gamma)
 
                 all_agent_logprobs[i].append(agent_logprobs)
-                all_agent_returns[i].append(ret)
+                all_agent_returns[i].append(returns)
+            potential_returns = compute_discounted_returns(torch.stack(potentials), gamma=gamma)
+            all_episode_potentials.append(potential_returns[0])
 
-            all_episode_potentials.append(compute_discounted_return(torch.stack(potentials), gamma=gamma))
-
-        # Compute mean return (baseline) per agent
-        agent_baselines = [torch.mean(torch.stack(returns)) for returns in all_agent_returns]
+        if use_baseline:
+            # Compute mean return (baseline) per agent
+            #
+            # notice that the current version means along each episode separately.
+            # It is good for standard REINFORCE but not for our variant.
+            agent_baselines = [torch.mean(torch.stack(returns), dim=0) for returns in all_agent_returns]
 
         agents_episode_losses = []
         agents_episode_returns = []
@@ -118,19 +135,27 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
             # Subtract baseline and compute REINFORCE loss
             loss = 0.0
             for logprobs, R in zip(all_agent_logprobs[i], all_agent_returns[i]):
-                advantage = R - agent_baselines[i]
-                loss += -torch.sum(logprobs) * advantage
+                advantage = R - agent_baselines[i] if use_baseline else R
+                if use_episodic_freeze:
+                    loss += -torch.sum(logprobs) * advantage[0]
+                else:
+                    loss += -torch.sum(logprobs * advantage)
             loss = loss / batch_size
+
+            # collect output stats
             agents_episode_losses.append(loss)
             agents_episode_returns.append(torch.mean(torch.stack(all_agent_returns[i])).item())
 
-        # Backprop and update
-        for i, (optimizer, loss) in enumerate(zip(independent_optimizers, agents_episode_losses)):
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
             agents_losses[i].append(loss.item())
             agents_returns[i].append(agents_episode_returns[i])
+
+        # # Sum all losses before calling backward
+        total_loss = sum(agents_episode_losses)
+        for optimizer in independent_optimizers:
+            optimizer.zero_grad()
+        total_loss.backward()
+        for optimizer in independent_optimizers:
+            optimizer.step()
 
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
         if debug:
@@ -162,66 +187,6 @@ def train_with_advantage(env: EpisodicCongestionGame, num_episodes, batch_size: 
 
     last_episode_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(potentials)]
     return agents_losses, episode_potential_sums, last_episode_discounted_potentials, actions, agents_returns
-
-
-def train(env: EpisodicCongestionGame, num_episodes, batch_size: int = 1, debug: bool = True):
-    # set optimizers
-    independent_optimizers = []
-    for i, agent in enumerate(env.agents):
-        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=1e-3))
-
-    # iterate episodes
-    agents_losses = [[] for _ in env.agents]
-    episode_potential_sums = []
-    for episode in tqdm(range(num_episodes // batch_size)):
-        agents_episode_losses = [0.0 for _ in env.agents]
-        for b in range(batch_size):
-            env.reset()
-            actions, logprobs, rewards, potentials = env.do_episode()
-
-            for i, agent in enumerate(env.agents):
-                # Compute loss: use negative log-likelihood weighted by reward
-                # loss = -∑ log π(a|s) * reward
-                agent_rewards = torch.stack([step_reward[i] for step_reward in rewards])
-                agent_logprobs = torch.stack([logprob for action, logprob in agent.policy_map.values()])
-                agents_episode_losses[i] += (-torch.sum(agent_logprobs) * compute_discounted_return(agent_rewards.detach(), gamma=gamma)) / batch_size
-            episode_potential_sums.append(compute_discounted_return(torch.stack(potentials), gamma=gamma))
-        # Before backward pass
-        for i, (optimizer, loss) in enumerate(zip(independent_optimizers, agents_episode_losses)):
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            agents_losses[i].append(loss.item())
-
-        if debug:
-            # all_agents_flat_grads = []
-            print(f"############################")
-            print(f"Episode {episode} Gradeints:")
-            for i, agent in enumerate(env.agents):
-                agent_grad_norms = []
-                print(f"Agent {i} Gradeints:")
-                for name, param in agent.policy_func.named_parameters():
-                    if param.grad is not None:
-                        grad_norm = param.grad.norm().item()
-                        print(f"{name}: grad norm = {grad_norm:.4f}")
-                        agent_grad_norms.append(grad_norm)
-                # flat_grad_norms = torch.cat(agent_grad_norms)
-                # all_agents_flat_grads.append(flat_grads)
-
-                # import matplotlib.pyplot as plt
-                #
-                # plt.figure()
-                # plt.hist(agent_grad_norms, bins=50, alpha=0.5)
-                # plt.title(f"Agent {i} - episode {episode} - Gradient Histogram")
-                # plt.xlabel("Gradient value")
-                # plt.ylabel("Frequency")
-                # plt.show()
-                print("")
-                print("#############################")
-                print("")
-
-    last_episode_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(potentials)]
-    return agents_losses, episode_potential_sums, last_episode_discounted_potentials, actions
 
 
 def run_episodic_simulation(env: EpisodicCongestionGame, num_episodes):
@@ -276,12 +241,13 @@ if __name__ == '__main__':
     num_agents = 3
     state_dim = 3
     action_dim = state_dim
-    history_len = 1
+    history_len = 0
     episode_len = 64
     gamma = 0.99
 
-    BATCH_SIZE = 64
-    NUM_EPISODES = BATCH_SIZE * 64
+    BATCH_SIZE = 32
+    NUM_EPISODES = BATCH_SIZE * 128
+    use_episodic_freeze = True
 
 
     aug_dim = history_len + 1
@@ -294,22 +260,27 @@ if __name__ == '__main__':
     for i in range(num_agents):
         init_state = init_states_tuple[i]
         # policy = make_linear_softmax_policy(aug_dim, action_dim)
-        policy = DiscreteStatePolicy(state_vocab_sizes=aug_dim * [state_dim],
-                                     embedding_dim=max(1, aug_dim // 2) * state_dim,
-                                     hidden_dim=action_dim,
-                                     num_actions=action_dim)
+        policy = DiscreteStatePolicyNoEmbeddings(
+            state_vocab_sizes=aug_dim * [state_dim],
+            hidden_dim=action_dim,
+            num_actions=action_dim
+        )
         agent = EpisodicAgent(state_dim, action_dim, policy_func=policy, init_state=init_state)
         agents.append(agent)
+
+    g_func_rand = make_random_g_func(num_agents=num_agents, num_actions=action_dim)
+    u_funcs_rand = make_random_u_funcs(num_agents=num_agents, num_states=state_dim, num_actions=action_dim)
 
     ecg = EpisodicCongestionGame(agents=agents,
                                  num_actions=action_dim,
                                  g_func=g_func,
-                                 u_func=make_u_i(state_dim),
+                                 u_funcs=[make_u_i(state_dim) for i in range(num_agents)],
                                  history_len=history_len,
-                                 episode_len=episode_len)
+                                 episode_len=episode_len,
+                                 use_episodic_freeze=use_episodic_freeze)
 
     policy_path = f'optimal_policies/{num_agents}_agents_{state_dim}_states_{action_dim}_actions_gamma_{gamma}'
-    if os.path.exists(policy_path) or overwrite_optimal_policy:
+    if os.path.exists(policy_path) and not overwrite_optimal_policy:
         with open(policy_path, 'rb') as f:
             optimal_policy = pkl.load(f)
     else:
@@ -322,9 +293,13 @@ if __name__ == '__main__':
             pkl.dump(optimal_policy, f)
     opt_policy_induced_transitions = {(s, a): a for s, a in optimal_policy.items()}
     visualize_joint_mdp(opt_policy_induced_transitions)
-    optimal_episode_potential, optimal_episode_step_potentials = evaluate_policy(ecg.agents, optimal_policy, make_potential_func(state_dim), gamma=0.99, episode_len=episode_len)
-    agents_losses, potentials, last_episode_potentials, last_actions, returns = train_with_advantage(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, debug=False)
-    joint_actions_as_tuples = [tuple(action.tolist()) for action in last_actions]
+    optimal_episode_discounted_potential, optimal_episode_step_discounted_potentials = evaluate_policy(ecg.agents, optimal_policy, make_potential_func(state_dim), gamma=0.99, episode_len=episode_len)
+    agents_losses, potentials, last_episode_potentials, last_actions, returns = train(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, debug=False)
+    ecg.reset()
+    argmax_actions, max_logprobs, argmax_rewards, argmax_potentials = ecg.do_episode(is_inference=True)
+    print(f"max probs: {[torch.exp(l) for l in max_logprobs]}")
+    argmax_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(argmax_potentials)]
+    joint_actions_as_tuples = [tuple(action.tolist()) for action in argmax_actions]
     traj = get_joint_state_trajectory(init_states_tuple[:num_agents], joint_actions_as_tuples)
 
     from matplotlib import pyplot as plt
@@ -337,8 +312,8 @@ if __name__ == '__main__':
     smoothed_losses = [moving_average(loss, window_size) for loss in agents_losses]
 
     plt.figure()
-    plt.plot(optimal_episode_step_potentials)
-    plt.plot(last_episode_potentials)
+    plt.plot(optimal_episode_step_discounted_potentials)
+    plt.plot(argmax_discounted_potentials)
     plt.show()
 
     plt.figure()
@@ -365,7 +340,8 @@ if __name__ == '__main__':
     smoothed_potentials = moving_average(potentials, window_size)
     plt.plot(potentials, label='Original')
     # plt.plot(range(window_size - 1, len(potentials)), smoothed_potentials, label=f'{window_size}-ep MA', linewidth=2)
-    plt.axhline(y=optimal_episode_potential, color='red', linestyle='--', label='joint optimum')
+    plt.axhline(y=optimal_episode_discounted_potential, color='red', linestyle='--', label='joint optimum')
+    plt.axhline(y=sum(argmax_discounted_potentials).item(), color='green', linestyle='--', label='argmax policy potential')
     plt.xlabel("Episode")
     plt.ylabel("Potential")
     plt.title("Potential with Moving Average")
