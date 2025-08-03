@@ -16,6 +16,33 @@ import torch.optim as optim
 from congestion_game.utils import evaluate_policy, visualize_joint_mdp
 
 
+def inject_optimal_path(env: EpisodicCongestionGame):
+    # inject optimal actions
+    agent_0_aug_states_to_actions = {
+        (0, 1): 0,
+        (1, 0): 0,
+        (0, 0): 0
+    }
+    for state_key, action in agent_0_aug_states_to_actions.items():
+        env.agents[0].policy_map[state_key] = (torch.tensor(action), torch.log(env.agents[0].policy_func(torch.tensor(state_key))[action]))
+
+    agent_1_aug_states_to_actions = {
+        (0, 1): 2,
+        (1, 2): 1,
+        (2, 1): 2
+    }
+    for state_key, action in agent_1_aug_states_to_actions.items():
+        env.agents[1].policy_map[state_key] = (torch.tensor(action), torch.log(env.agents[1].policy_func(torch.tensor(state_key))[action]))
+
+    agent_2_aug_states_to_actions = {
+        (0, 0): 1,
+        (0, 1): 2,
+        (1, 2): 1,
+        (2, 1): 2,
+    }
+    for state_key, action in agent_2_aug_states_to_actions.items():
+        env.agents[2].policy_map[state_key] = (torch.tensor(action), torch.log(env.agents[2].policy_func(torch.tensor(state_key))[action]))
+
 def compute_discounted_returns(rewards: torch.Tensor, gamma: float) -> torch.Tensor:
     """
     Computes the discounted return for a single trajectory.
@@ -93,7 +120,7 @@ def train(env: EpisodicCongestionGame,
     # Set optimizers
     independent_optimizers = []
     for i, agent in enumerate(env.agents):
-        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=1e-3))
+        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=5e-3))
 
     agents_losses = [[] for _ in env.agents]
     agents_returns = [[] for _ in env.agents]
@@ -107,27 +134,33 @@ def train(env: EpisodicCongestionGame,
 
         for b in range(batch_size):
             env.reset()
+            if b == 0:
+                inject_optimal_path(env)
             actions, logprobs, rewards, potentials = env.do_episode()
 
             for i, agent in enumerate(env.agents):
                 agent_rewards = torch.stack([step_reward[i] for step_reward in rewards])
+                returns = compute_discounted_returns(agent_rewards.detach(), gamma=gamma)
                 if use_episodic_freeze:
                     agent_logprobs = torch.stack([logprob for action, logprob in agent.policy_map.values()])
+                    all_agent_returns[i].append(returns[0])
                 else:
                     agent_logprobs = torch.stack([step_logprobs[i] for step_logprobs in logprobs])
-                returns = compute_discounted_returns(agent_rewards.detach(), gamma=gamma)
+                    all_agent_returns[i].append(returns)
 
                 all_agent_logprobs[i].append(agent_logprobs)
-                all_agent_returns[i].append(returns)
+
             potential_returns = compute_discounted_returns(torch.stack(potentials), gamma=gamma)
             all_episode_potentials.append(potential_returns[0])
 
         if use_baseline:
             # Compute mean return (baseline) per agent
-            #
-            # notice that the current version means along each episode separately.
-            # It is good for standard REINFORCE but not for our variant.
-            agent_baselines = [torch.mean(torch.stack(returns), dim=0) for returns in all_agent_returns]
+            if use_episodic_freeze:
+                # variant for frozen episodic sampling
+                agent_baselines = [torch.mean(torch.stack(returns), dim=0) for returns in all_agent_returns]
+            else:
+                # standard REINFORCE
+                agent_baselines = [torch.mean(torch.stack(returns), dim=0) for returns in all_agent_returns]
 
         agents_episode_losses = []
         agents_episode_returns = []
@@ -137,7 +170,7 @@ def train(env: EpisodicCongestionGame,
             for logprobs, R in zip(all_agent_logprobs[i], all_agent_returns[i]):
                 advantage = R - agent_baselines[i] if use_baseline else R
                 if use_episodic_freeze:
-                    loss += -torch.sum(logprobs) * advantage[0]
+                    loss += -torch.sum(logprobs) * advantage
                 else:
                     loss += -torch.sum(logprobs * advantage)
             loss = loss / batch_size
@@ -238,20 +271,22 @@ if __name__ == '__main__':
     import matplotlib
     matplotlib.use('TkAgg')
 
+    DEBUG = False
+
     num_agents = 3
     state_dim = 3
     action_dim = state_dim
-    history_len = 0
+    history_len = 2
     episode_len = 64
     gamma = 0.99
 
-    BATCH_SIZE = 32
-    NUM_EPISODES = BATCH_SIZE * 128
+    BATCH_SIZE = 16
+    NUM_EPISODES = BATCH_SIZE * 16
     use_episodic_freeze = True
 
 
     aug_dim = history_len + 1
-    init_states_tuple = (1, 0, 1, 2, 0)
+    init_states_tuple = (1, 1, 0, 2, 0)
 
     overwrite_optimal_policy = False
 
@@ -268,8 +303,8 @@ if __name__ == '__main__':
         agent = EpisodicAgent(state_dim, action_dim, policy_func=policy, init_state=init_state)
         agents.append(agent)
 
-    g_func_rand = make_random_g_func(num_agents=num_agents, num_actions=action_dim)
-    u_funcs_rand = make_random_u_funcs(num_agents=num_agents, num_states=state_dim, num_actions=action_dim)
+    # g_func_rand = make_random_g_func(num_agents=num_agents, num_actions=action_dim)
+    # u_funcs_rand = make_random_u_funcs(num_agents=num_agents, num_states=state_dim, num_actions=action_dim)
 
     ecg = EpisodicCongestionGame(agents=agents,
                                  num_actions=action_dim,
@@ -279,7 +314,7 @@ if __name__ == '__main__':
                                  episode_len=episode_len,
                                  use_episodic_freeze=use_episodic_freeze)
 
-    policy_path = f'optimal_policies/{num_agents}_agents_{state_dim}_states_{action_dim}_actions_gamma_{gamma}'
+    policy_path = f'optimal_policies/NEW_{num_agents}_agents_{state_dim}_states_{action_dim}_actions_gamma_{gamma}'
     if os.path.exists(policy_path) and not overwrite_optimal_policy:
         with open(policy_path, 'rb') as f:
             optimal_policy = pkl.load(f)
@@ -294,7 +329,7 @@ if __name__ == '__main__':
     opt_policy_induced_transitions = {(s, a): a for s, a in optimal_policy.items()}
     visualize_joint_mdp(opt_policy_induced_transitions)
     optimal_episode_discounted_potential, optimal_episode_step_discounted_potentials = evaluate_policy(ecg.agents, optimal_policy, make_potential_func(state_dim), gamma=0.99, episode_len=episode_len)
-    agents_losses, potentials, last_episode_potentials, last_actions, returns = train(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, debug=False)
+    agents_losses, potentials, last_episode_potentials, last_actions, returns = train(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, use_baseline=True ,debug=DEBUG)
     ecg.reset()
     argmax_actions, max_logprobs, argmax_rewards, argmax_potentials = ecg.do_episode(is_inference=True)
     print(f"max probs: {[torch.exp(l) for l in max_logprobs]}")

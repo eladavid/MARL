@@ -1,18 +1,18 @@
 import torch
 
 
-def g_func(actions, num_agents):
-    """
-    actions: Tensor of shape (n_agents,) with discrete actions
-    action_dim: total number of possible actions (needed to pad bincount)
-    """
-    counts = torch.bincount(actions)  # (A,)
-    return 5*(1-torch.sum((counts.float() / num_agents) ** 2))
+# def g_func(actions, num_agents):
+#     """
+#     actions: Tensor of shape (n_agents,) with discrete actions
+#     action_dim: total number of possible actions (needed to pad bincount)
+#     """
+#     counts = torch.bincount(actions)  # (A,)
+#     return 5*(1-torch.sum((counts.float() / num_agents) ** 2))
 
-def make_u_i(num_states):
-    def u(s_i, a_i):
-        return 1*(1-(abs(s_i - a_i) / num_states))
-    return u
+# def make_u_i(num_states):
+#     def u(s_i, a_i):
+#         return 1*(1-(abs(s_i - a_i) / num_states))
+#     return u
 
 def make_potential_func(state_dim):
     def potential_func(joint_state, joint_action):
@@ -53,3 +53,29 @@ def make_random_u_funcs(num_agents, num_states, num_actions, seed=None):
         u_funcs.append(u_func_factory(u_table))
 
     return u_funcs
+
+
+#################################################
+####  TRYING TO CREATE g, u that form a path ####
+#################################################
+
+def g_func(actions, num_agents):
+    """
+    actions: Tensor of shape (n_agents,) with discrete actions
+    action_dim: total number of possible actions (needed to pad bincount)
+    """
+
+    # return maximal reward for 2 specific actions
+    if torch.all(actions == torch.tensor([0, 1, 2])) or torch.all(actions == torch.tensor([0, 2, 1])):
+        return 10
+    else:
+        counts = torch.bincount(actions)  # (A,)
+    return 1-torch.sum((counts.float() / num_agents) ** 2)
+
+def make_u_i(num_states):
+    def u(s_i, a_i):
+        if s_i == 0:
+            return 3*(1-(abs(s_i - a_i) / num_states))
+        else:
+            return 3*(abs(s_i - a_i) / num_states)
+    return u
