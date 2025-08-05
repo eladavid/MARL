@@ -1,3 +1,5 @@
+import pickle
+
 import numpy as np
 import torch
 import itertools
@@ -13,7 +15,7 @@ from congestion_game.reward_functions import g_func, make_u_i, make_potential_fu
     make_random_u_funcs
 import torch.optim as optim
 
-from congestion_game.utils import evaluate_policy, visualize_joint_mdp
+from congestion_game.utils import evaluate_policy, visualize_joint_mdp, compute_discounted_returns
 
 
 def inject_optimal_path(env: EpisodicCongestionGame):
@@ -42,27 +44,6 @@ def inject_optimal_path(env: EpisodicCongestionGame):
     }
     for state_key, action in agent_2_aug_states_to_actions.items():
         env.agents[2].policy_map[state_key] = (torch.tensor(action), torch.log(env.agents[2].policy_func(torch.tensor(state_key))[action]))
-
-def compute_discounted_returns(rewards: torch.Tensor, gamma: float) -> torch.Tensor:
-    """
-    Computes the discounted return for a single trajectory.
-
-    Args:
-        rewards (torch.Tensor): Tensor of shape [T] with rewards.
-        gamma (float): Discount factor.
-
-    Returns:
-        torch.Tensor: Scalar tensor with the total discounted return.
-    """
-    returns = torch.zeros_like(rewards)
-    # R = torch.zeros((rewards.shape[1],), device=rewards.device)
-    R = torch.tensor(0)
-    for t in reversed(range(rewards.shape[0])):
-        R = rewards[t] + gamma * R
-        returns[t] = R
-
-    return returns
-
 
 def find_joint_optimum(num_agents, num_states, num_actions, joint_reward_func, gamma=0.99, theta: float = 1e-1):
     joint_states = list(itertools.product(range(num_states), repeat=num_agents))
@@ -112,6 +93,10 @@ def run_simulation(env, steps):
     return np.stack(all_actions), np.stack(all_rewards)
 
 
+# def calc_true_grads(env: EpisodicCongestionGame):
+
+
+
 def train(env: EpisodicCongestionGame,
           num_episodes: int,
           batch_size: int = 1,
@@ -120,12 +105,12 @@ def train(env: EpisodicCongestionGame,
     # Set optimizers
     independent_optimizers = []
     for i, agent in enumerate(env.agents):
-        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=5e-3))
+        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=1e-3))
 
     agents_losses = [[] for _ in env.agents]
     agents_returns = [[] for _ in env.agents]
     episode_potential_sums = []
-
+    all_agents_grad_norms = [[] for _ in env.agents]
     for episode in tqdm(range(num_episodes // batch_size), desc="REINFORCE Batching"):
         # Collect logprobs and rewards for batch
         all_agent_logprobs = [[] for _ in env.agents]
@@ -134,7 +119,7 @@ def train(env: EpisodicCongestionGame,
 
         for b in range(batch_size):
             env.reset()
-            if b == 0:
+            if b % 8 == 0:
                 inject_optimal_path(env)
             actions, logprobs, rewards, potentials = env.do_episode()
 
@@ -193,16 +178,17 @@ def train(env: EpisodicCongestionGame,
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
         if debug:
             # all_agents_flat_grads = []
-            print(f"############################")
-            print(f"Episode {episode} Gradeints:")
+            # print(f"############################")
+            # print(f"Episode {episode} Gradeints:")
             for i, agent in enumerate(env.agents):
                 agent_grad_norms = []
-                print(f"Agent {i} Gradeints:")
+                # print(f"Agent {i} Gradeints:")
                 for name, param in agent.policy_func.named_parameters():
                     if param.grad is not None:
                         grad_norm = param.grad.norm().item()
-                        print(f"{name}: grad norm = {grad_norm:.4f}")
+                        # print(f"{name}: grad norm = {grad_norm:.4f}")
                         agent_grad_norms.append(grad_norm)
+                all_agents_grad_norms[i].append(agent_grad_norms)
                 # flat_grad_norms = torch.cat(agent_grad_norms)
                 # all_agents_flat_grads.append(flat_grads)
 
@@ -214,10 +200,15 @@ def train(env: EpisodicCongestionGame,
                 # plt.xlabel("Gradient value")
                 # plt.ylabel("Frequency")
                 # plt.show()
-                print("")
-                print("#############################")
-                print("")
+                # print("")
+                # print("#############################")
+                # print("")
+            x = 0
+    if debug:
+        with open('dbg_stats/1000_batched_episodes_grad_stats.pkl', 'wb') as f:
+            pickle.dump(all_agents_grad_norms, f)
 
+    print(f"is current policy NE: {env.check_if_nash_eq()}")
     last_episode_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(potentials)]
     return agents_losses, episode_potential_sums, last_episode_discounted_potentials, actions, agents_returns
 
@@ -271,17 +262,17 @@ if __name__ == '__main__':
     import matplotlib
     matplotlib.use('TkAgg')
 
-    DEBUG = False
+    DEBUG = True
 
     num_agents = 3
     state_dim = 3
     action_dim = state_dim
-    history_len = 2
+    history_len = 1
     episode_len = 64
     gamma = 0.99
 
     BATCH_SIZE = 16
-    NUM_EPISODES = BATCH_SIZE * 16
+    NUM_EPISODES = BATCH_SIZE * 32
     use_episodic_freeze = True
 
 

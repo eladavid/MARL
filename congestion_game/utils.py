@@ -61,3 +61,24 @@ def visualize_joint_mdp(policy_induced_transition_prob):
 
     plt.title("Joint State-Action MDP Visualization")
     plt.show()
+
+
+def compute_discounted_returns(rewards: torch.Tensor, gamma: float) -> torch.Tensor:
+    """
+    Computes the discounted return for a single trajectory.
+
+    Args:
+        rewards (torch.Tensor): Tensor of shape [T] with rewards.
+        gamma (float): Discount factor.
+
+    Returns:
+        torch.Tensor: Scalar tensor with the total discounted return.
+    """
+    returns = torch.zeros_like(rewards)
+    # R = torch.zeros((rewards.shape[1],), device=rewards.device)
+    R = torch.tensor(0)
+    for t in reversed(range(rewards.shape[0])):
+        R = rewards[t] + gamma * R
+        returns[t] = R
+
+    return returns
