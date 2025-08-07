@@ -20,7 +20,7 @@ class EpisodicAgent:
     def act(self, augmented_state, use_episodic_freeze: bool = False):
         state_key = tuple(augmented_state)
         if state_key not in self.policy_map:
-            probs = self.policy_func(torch.tensor(augmented_state))
+            probs = self.policy_func(torch.tensor(augmented_state, dtype=torch.long))
             dist = torch.distributions.Categorical(probs)
             action = dist.sample()
             log_prob = dist.log_prob(action)
