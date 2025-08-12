@@ -1,0 +1,45 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\NE_convergence_experiment_20250810_143239
+Total Runs: 1
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 615.7245
+  Std:  0.0000
+  Min:  615.7245
+  Max:  615.7245
+
+Optimal Performance: 708.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 92.8805
+  Std:  0.0000
+  Min:  92.8805
+  Max:  92.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 118.41
+  Std:  0.00
+  Min:  118.41
+  Max:  118.41
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1212824492
+  Final Potential: 615.7245
+  Training Time: 118.41s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 2), 'seed': 1212824492, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1212824492', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1212824492
+  Final Potential: 615.7245
+  Training Time: 118.41s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 2), 'seed': 1212824492, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1212824492', 'check_nash_equilibrium': False}
+
+PARAMETER ANALYSIS
+----------------------------------------
+All runs used identical parameters

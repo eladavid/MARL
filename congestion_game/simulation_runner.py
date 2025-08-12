@@ -119,8 +119,8 @@ def train(env: EpisodicCongestionGame,
 
         for b in range(batch_size):
             env.reset()
-            if b % 8 == 0:
-                inject_optimal_path(env)
+            # if b % 8 == 0:
+            #     inject_optimal_path(env)
             actions, logprobs, rewards, potentials = env.do_episode()
 
             for i, agent in enumerate(env.agents):
@@ -205,7 +205,7 @@ def train(env: EpisodicCongestionGame,
                 # print("")
             x = 0
     if debug:
-        with open('dbg_stats/1000_batched_episodes_grad_stats.pkl', 'wb') as f:
+        with open('dbg_stats/batched_episodes_grad_stats.pkl', 'wb') as f:
             pickle.dump(all_agents_grad_norms, f)
 
     print(f"is current policy NE: {env.check_if_nash_eq()}")

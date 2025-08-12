@@ -1,0 +1,40 @@
+{
+  "num_runs": 10,
+  "final_potential_stats": {
+    "mean": 422.96319580078125,
+    "std": 0.0,
+    "min": 422.96319580078125,
+    "max": 422.96319580078125
+  },
+  "optimal_potential": 710.6050415039062,
+  "training_time_stats": {
+    "mean": 294.6314923524857,
+    "std": 1.6476091907945385,
+    "min": 292.208753824234,
+    "max": 296.80550479888916
+  },
+  "convergence_rate": 0.0,
+  "run_ids": [
+    "baseline_seed_3",
+    "baseline_seed_1",
+    "baseline_seed_6",
+    "baseline_seed_7",
+    "baseline_seed_9",
+    "baseline_seed_2",
+    "baseline_seed_4",
+    "baseline_seed_0",
+    "baseline_seed_5",
+    "baseline_seed_8"
+  ],
+  "nash_equilibrium_stats": {
+    "num_checked": 10,
+    "num_nash": 10,
+    "nash_rate": 1.0,
+    "nash_check_time_stats": {
+      "mean": 4.375727915763855,
+      "std": 0.23659116979827885,
+      "min": 3.9997904300689697,
+      "max": 4.799140453338623
+    }
+  }
+}

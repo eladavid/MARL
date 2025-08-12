@@ -82,3 +82,17 @@ def compute_discounted_returns(rewards: torch.Tensor, gamma: float) -> torch.Ten
         returns[t] = R
 
     return returns
+
+def freeze_policy_dict(policy_dict):
+    """
+    Converts a policy dict to a sorted tuple of (state, action) pairs,
+    ignoring logprobs (assumes values are (action_tensor, logprob_tensor)).
+    Extracts scalar values from 0-dim torch tensors.
+    """
+    return tuple(sorted(
+        (state, action_logprob[0].item())  # extract action only, as scalar
+        for state, action_logprob in policy_dict.items()
+    ))
+
+def freeze_joint_policy(joint_policy_list):
+    return tuple(freeze_policy_dict(policy) for policy in joint_policy_list)

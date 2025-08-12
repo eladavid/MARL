@@ -1,0 +1,39 @@
+{
+  "num_runs": 20,
+  "final_potential_stats": {
+    "mean": 422.96319580078125,
+    "std": 0.0,
+    "min": 422.96319580078125,
+    "max": 422.96319580078125
+  },
+  "optimal_potential": 710.6050415039062,
+  "training_time_stats": {
+    "mean": 415.03531246185304,
+    "std": 1.621666842156703,
+    "min": 411.2687168121338,
+    "max": 417.7114520072937
+  },
+  "convergence_rate": 0.0,
+  "run_ids": [
+    "baseline_seed_17",
+    "baseline_seed_18",
+    "baseline_seed_14",
+    "baseline_seed_2",
+    "baseline_seed_11",
+    "baseline_seed_3",
+    "baseline_seed_4",
+    "baseline_seed_7",
+    "baseline_seed_9",
+    "baseline_seed_16",
+    "baseline_seed_8",
+    "baseline_seed_10",
+    "baseline_seed_13",
+    "baseline_seed_12",
+    "baseline_seed_15",
+    "baseline_seed_0",
+    "baseline_seed_5",
+    "baseline_seed_19",
+    "baseline_seed_6",
+    "baseline_seed_1"
+  ]
+}

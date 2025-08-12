@@ -47,7 +47,7 @@ class EpisodicAgent:
         argmax_policy_map = {}
         for augmented_state in all_augmented_states:
             action, log_prob = self.argmax_inference(augmented_state)
-            argmax_policy_map[tuple(augmented_state)] = action, log_prob
+            argmax_policy_map[tuple(augmented_state)] = action.detach(), log_prob.detach()
         return argmax_policy_map
 
     def update_state(self, new_state):

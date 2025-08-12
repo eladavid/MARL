@@ -1,0 +1,3046 @@
+{
+  "total_checked": 300,
+  "successful_checks": 300,
+  "nash_equilibria_found": 300,
+  "failed_checks": 0,
+  "nash_results": {
+    "sweep_seed_1065858366": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.570691347122192,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_109501881": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.349140882492065,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1096214611": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.52494740486145,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1241639944": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.324577331542969,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1278033094": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.2770726680755615,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1421165723": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.0896477699279785,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1478576672": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.571025133132935,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1489578131": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.5432329177856445,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1615041407": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.995618104934692,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1624520801": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.670138597488403,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1626716692": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.381918668746948,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1746689922": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.175952672958374,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1897483664": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.37759256362915,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1940374772": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.357820749282837,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2069373893": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.35268235206604,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2073445251": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.185134172439575,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2125957013": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.670562744140625,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2374937433": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.061710834503174,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_238811247": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.158670425415039,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2437408156": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.1574811935424805,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2513897623": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.5342302322387695,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2569716528": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.353199243545532,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_261325898": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.179784536361694,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2634853374": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.285709857940674,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2856320425": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.386835813522339,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2865763038": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.331587314605713,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2878114709": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.257383823394775,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2904491693": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.236379623413086,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2941292321": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.134760856628418,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3017305172": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.3297648429870605,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3263627196": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.281522274017334,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3276513167": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.152138948440552,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3295827970": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.103862524032593,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3387213021": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.397667169570923,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3424658561": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.018482208251953,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3458230640": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.159876823425293,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_349892316": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.533136606216431,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_38629052": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.979689598083496,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4198468090": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.655903577804565,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_423750561": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.0445709228515625,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_464053238": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.613065719604492,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_526061820": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.283698797225952,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_548426132": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.259808778762817,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_875175160": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.0097527503967285,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_898314033": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.656037092208862,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_913046978": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.0115885734558105,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1057684339": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.992846727371216,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1111766880": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.762410402297974,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1144269602": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.78664493560791,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1150928999": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.246469497680664,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_117612189": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.03671932220459,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1246930851": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.329947233200073,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1247132544": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.664880037307739,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1344777899": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.018728971481323,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1358653540": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.802322626113892,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1402190273": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.649294137954712,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1423623685": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.248539447784424,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1432104431": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.206397533416748,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1459551595": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.049830913543701,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1460719170": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.395207166671753,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1489704928": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.170867919921875,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1526631005": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.045163631439209,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1755498727": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.050782680511475,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1897686915": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.978884696960449,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2037245216": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.322439908981323,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2439679748": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.324312210083008,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2484666640": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.744364500045776,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_249978285": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.217840194702148,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2500809667": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.885798454284668,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2649260283": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.1267993450164795,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2699835958": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.591092109680176,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2701505036": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.524761438369751,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2751328124": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.543465852737427,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_277795965": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.035334825515747,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2902416131": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.2725865840911865,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_292434398": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.2289719581604,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3003105692": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.761241674423218,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3152106376": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.366024017333984,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3211981669": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.340092897415161,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_332957984": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.106671094894409,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3350108232": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.244496822357178,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3463485388": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.000877141952515,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3466446890": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.201079845428467,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3503732972": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.058942794799805,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_350446006": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.880090951919556,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_366709856": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.1741132736206055,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3676418010": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.3955159187316895,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3736624461": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.380882978439331,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_393697109": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.567248106002808,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3991475463": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.485682487487793,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4020691960": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.554242372512817,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4045012504": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.657735824584961,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4075413513": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.096144437789917,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4225551378": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.046666383743286,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_521138260": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.427749395370483,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_561033802": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.1944074630737305,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_721252997": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.025365829467773,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_876933080": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.945765495300293,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_945472433": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.417935132980347,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1070565993": {
+      "is_nash_equilibrium": true,
+      "check_time": 903.3121483325958,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1104125174": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.898102045059204,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1119179194": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.047731637954712,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1175690263": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.13446831703186,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1175846864": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.749021768569946,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_13253302": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.912071943283081,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1676420718": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.638354301452637,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1800419351": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.53549337387085,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1832837905": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.450379133224487,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2007284218": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.0462775230407715,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2028936026": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.057735919952393,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2033062299": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.663508892059326,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2045988652": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.735856533050537,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2066857349": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.374842166900635,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_21570758": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.533175706863403,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2169113577": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.452601909637451,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2217301351": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.034846305847168,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2324790283": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.862628698348999,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2570830042": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.929910182952881,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2580621796": {
+      "is_nash_equilibrium": true,
+      "check_time": 8.176372528076172,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2778578552": {
+      "is_nash_equilibrium": true,
+      "check_time": 8.678341150283813,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2852003033": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.8722450733184814,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2977011510": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.409180641174316,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2995539971": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.2789671421051025,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3152197458": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.45891809463501,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3195502165": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.523787975311279,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3299083934": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.865169286727905,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3325497001": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.526833534240723,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3442941049": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.490264654159546,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3605303106": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.968876600265503,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3696039763": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.486435413360596,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3702933075": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.794022083282471,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3743739485": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.513488054275513,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3850527266": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.4043896198272705,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3941715874": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.550198078155518,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_403678582": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.539605379104614,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4131703719": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.6796746253967285,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_41713270": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.015974283218384,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4242687943": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.3709306716918945,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4247902114": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.104116678237915,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4267067873": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.689021825790405,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_682031044": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.384708881378174,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_773654992": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.318238973617554,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_915442270": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.067213535308838,
+      "init_states_tuple": [
+        1,
+        0,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_104832471": {
+      "is_nash_equilibrium": true,
+      "check_time": 898.7840323448181,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_107846371": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.593433856964111,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1429424934": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.853029251098633,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1478946054": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.793293237686157,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1492650611": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.738463640213013,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1681873724": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.369250297546387,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1815389063": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.106985807418823,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1855163943": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.620799541473389,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_198032413": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.963271856307983,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2031050389": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.1561362743377686,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2128717202": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.149876356124878,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2141779427": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.607269525527954,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2301477783": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.688519477844238,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2306261419": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.507680892944336,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2371040795": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.916792154312134,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2481771860": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.0511884689331055,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2624742147": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.345755338668823,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2654533408": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.534843683242798,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2655982844": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.513396978378296,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2806373941": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.85171914100647,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2864368672": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.290248394012451,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2867140167": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.646005392074585,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2872501728": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.390111446380615,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2889465206": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.430046081542969,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2977319396": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.103673696517944,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3060671820": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.745006084442139,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_312730420": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.985487461090088,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3145778132": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.822501182556152,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3223507524": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.849361896514893,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_347341074": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.10200047492981,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3487970182": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.087592840194702,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3601255569": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.505191326141357,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3610017889": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.095383644104004,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3671088524": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.068235397338867,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3703941559": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.3189942836761475,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3758412495": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.961966037750244,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3763171948": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.25586462020874,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3769511244": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.4991254806518555,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3787514017": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.990379095077515,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3880305411": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.299633979797363,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3929519758": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.288868188858032,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_398759963": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.003082513809204,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4017901498": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.274562835693359,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4068312275": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.117506504058838,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_411878496": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.466305255889893,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4143213144": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.394116640090942,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_521943878": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.281668186187744,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_556065447": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.501431941986084,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_645114141": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.5952308177948,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_6523142": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.487247943878174,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_704218573": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.361800670623779,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_757315778": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.725349187850952,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_802017219": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.331051349639893,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_902127636": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.49044942855835,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_984129068": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.631218194961548,
+      "init_states_tuple": [
+        1,
+        2,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1025451466": {
+      "is_nash_equilibrium": true,
+      "check_time": 902.2557625770569,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1031410876": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.439080476760864,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1066207224": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.198765516281128,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1143809828": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.2717883586883545,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1185183688": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.651761770248413,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1210451926": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.863600254058838,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1212824492": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.100454330444336,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1214280343": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.324060916900635,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1250663443": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.171339273452759,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1261792404": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.832321643829346,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1360466708": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.4208152294158936,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1424584135": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.315176963806152,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1434554516": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.92573356628418,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1437882509": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.737522602081299,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1478520530": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.573145389556885,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1576227836": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.33751368522644,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1624170338": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.392583608627319,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1679802727": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.416084289550781,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1841228347": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.901250839233398,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1893594432": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.566383600234985,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_199011104": {
+      "is_nash_equilibrium": true,
+      "check_time": 7.406417369842529,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2033282004": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.613607168197632,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2035922533": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.508985757827759,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2042481486": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.348069429397583,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2079128458": {
+      "is_nash_equilibrium": true,
+      "check_time": 8.615613222122192,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2345851045": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.056062936782837,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2396799522": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.028078317642212,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2436677970": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.23360538482666,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2609950229": {
+      "is_nash_equilibrium": true,
+      "check_time": 6.778377294540405,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2623924744": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.7325758934021,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2719779336": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.344234466552734,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2889143927": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.479816198348999,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2907617202": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.231991767883301,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2927228676": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.197548866271973,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2927652566": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.58217716217041,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3031395725": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.93272066116333,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3036956090": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.545385360717773,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3070822591": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.850341081619263,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3112912241": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.6939613819122314,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3374074164": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.6215174198150635,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_348713104": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.2534685134887695,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3530667050": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.079802751541138,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_367527789": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.430865526199341,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_375402272": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.22383713722229,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4002859530": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.540392160415649,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4027274691": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.455623626708984,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4142751829": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.538461923599243,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4162151639": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.591099500656128,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_498139153": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.378587961196899,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_703119898": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.989295244216919,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_728578662": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.29008674621582,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_748931093": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.36144757270813,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_830193079": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.679651975631714,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_910443027": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.881900310516357,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_935997338": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.454363107681274,
+      "init_states_tuple": [
+        2,
+        1,
+        0
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1078349150": {
+      "is_nash_equilibrium": true,
+      "check_time": 882.7370219230652,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1099691374": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.328336715698242,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1129763209": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.656024217605591,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1198584151": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.494427680969238,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1307338167": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.871946096420288,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_136538205": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.330078125,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_13977115": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.348044395446777,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1508193007": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.662851095199585,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1591675405": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.469960451126099,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1770025748": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.075658082962036,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1843202851": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.381791114807129,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1970904393": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.583221197128296,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_1997989380": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.864086866378784,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2178758402": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.435682535171509,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2325576896": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.9116082191467285,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2471023256": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.104861497879028,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2583943556": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.872499465942383,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2615040041": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.437774658203125,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2705073331": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.079560041427612,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2725271472": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.68233323097229,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_2760304911": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.065549373626709,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3032918238": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.36186957359314,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_310984977": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.501583814620972,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3238016945": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.110756874084473,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3313925213": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.187132120132446,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3361118956": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.386960744857788,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3527580965": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.314543962478638,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3598884273": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.0272626876831055,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3603600008": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.360947608947754,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3693240280": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.154999017715454,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3703716985": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.663675308227539,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3722490200": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.439501523971558,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3793928842": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.848045349121094,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3807402261": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.310375928878784,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3861219000": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.184720993041992,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4048570083": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.259218454360962,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4083072379": {
+      "is_nash_equilibrium": true,
+      "check_time": 3.2920610904693604,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4149385552": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.273486614227295,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4178272184": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.034601449966431,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_4245388044": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.43571925163269,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_514251427": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.793813467025757,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_569781012": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.248947381973267,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_686746376": {
+      "is_nash_equilibrium": true,
+      "check_time": 5.206326007843018,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_724255371": {
+      "is_nash_equilibrium": true,
+      "check_time": 3.6983087062835693,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_765790283": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.736226797103882,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_768639609": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.732146739959717,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_976400780": {
+      "is_nash_equilibrium": true,
+      "check_time": 4.969977140426636,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    }
+  },
+  "cluster_stats": {
+    "(2, 1, 0)": {
+      "total_runs": 55,
+      "successful_checks": 55,
+      "nash_equilibria": 55,
+      "nash_rate": 1.0
+    },
+    "(1, 2, 0)": {
+      "total_runs": 55,
+      "successful_checks": 55,
+      "nash_equilibria": 55,
+      "nash_rate": 1.0
+    },
+    "(0, 1, 2)": {
+      "total_runs": 53,
+      "successful_checks": 53,
+      "nash_equilibria": 53,
+      "nash_rate": 1.0
+    },
+    "(2, 0, 1)": {
+      "total_runs": 46,
+      "successful_checks": 46,
+      "nash_equilibria": 46,
+      "nash_rate": 1.0
+    },
+    "(1, 0, 2)": {
+      "total_runs": 44,
+      "successful_checks": 44,
+      "nash_equilibria": 44,
+      "nash_rate": 1.0
+    },
+    "(0, 2, 1)": {
+      "total_runs": 47,
+      "successful_checks": 47,
+      "nash_equilibria": 47,
+      "nash_rate": 1.0
+    }
+  }
+}

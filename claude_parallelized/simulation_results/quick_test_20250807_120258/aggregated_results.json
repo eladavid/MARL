@@ -1,0 +1,31 @@
+{
+  "num_runs": 1,
+  "final_potential_stats": {
+    "mean": 243.5177001953125,
+    "std": 0.0,
+    "min": 243.5177001953125,
+    "max": 243.5177001953125
+  },
+  "optimal_potential": 411.529541015625,
+  "training_time_stats": {
+    "mean": 29.02952218055725,
+    "std": 0.0,
+    "min": 29.02952218055725,
+    "max": 29.02952218055725
+  },
+  "convergence_rate": 0.0,
+  "run_ids": [
+    "quick_test_seed_42"
+  ],
+  "nash_equilibrium_stats": {
+    "num_checked": 1,
+    "num_nash": 1,
+    "nash_rate": 1.0,
+    "nash_check_time_stats": {
+      "mean": 233.47704601287842,
+      "std": 0.0,
+      "min": 233.47704601287842,
+      "max": 233.47704601287842
+    }
+  }
+}

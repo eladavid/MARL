@@ -12,6 +12,7 @@ from pathlib import Path
 from dataclasses import asdict
 from typing import Dict, List, Any
 import itertools
+import numpy as np
 
 # Import your simulation modules (adjust paths as needed)
 from parallel_simulation import SimulationConfig, SimulationManager, create_parameter_sweep_configs
@@ -27,16 +28,17 @@ def create_baseline_experiment() -> List[SimulationConfig]:
         episode_len=64,
         gamma=0.99,
         batch_size=128,
-        num_episodes=32768,  # 256 batches
+        num_episodes=128 * 128,
         use_episodic_freeze=True,
         use_baseline=True,
         learning_rate=1e-3,
         init_states_tuple=(1, 1, 0, 2, 0),
-        experiment_name="baseline_experiment"
+        experiment_name="baseline_experiment",
+        check_nash_equilibrium=True
     )
     
     configs = []
-    for seed in range(10):  # 10 different seeds
+    for seed in range(10):  # 20 different seeds
         config = SimulationConfig(**asdict(base_config))
         config.seed = seed
         config.run_id = f"baseline_seed_{seed}"
@@ -167,12 +169,13 @@ def create_quick_test() -> List[SimulationConfig]:
         episode_len=32,  # Shorter episodes
         gamma=0.99,
         batch_size=32,   # Smaller batches
-        num_episodes=64,  # Much fewer episodes
+        num_episodes=10*32,  # Much fewer episodes
         use_episodic_freeze=True,
         use_baseline=True,
         learning_rate=1e-3,
         init_states_tuple=(1, 1, 0),
-        experiment_name="quick_test"
+        experiment_name="quick_test",
+        check_nash_equilibrium=True
     )
     
     configs = []
@@ -217,7 +220,8 @@ def run_experiment(experiment_name: str, max_workers: int = None, dry_run: bool 
         'architecture_comparison': create_architecture_comparison,
         'freeze_comparison': create_freeze_comparison,
         'scalability_test': create_scalability_test,
-        'quick_test': create_quick_test
+        'quick_test': create_quick_test,
+        'custom': create_my_custom_experiment
     }
     
     if experiment_name not in experiment_functions:
@@ -255,7 +259,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run multi-agent RL experiments")
     parser.add_argument('experiment', choices=[
         'baseline', 'learning_rate_sweep', 'architecture_comparison',
-        'freeze_comparison', 'scalability_test', 'quick_test'
+        'freeze_comparison', 'scalability_test', 'quick_test', 'custom'
     ], help='Experiment to run')
     parser.add_argument('--workers', type=int, default=None,
                        help='Number of parallel workers (default: auto)')
@@ -299,7 +303,10 @@ def create_custom_parameter_sweep(base_params: Dict[str, Any],
     Returns:
         List of simulation configurations
     """
-    base_config = SimulationConfig(**base_params, experiment_name=experiment_name)
+    if base_params.get('experiment_name'):
+        base_config = SimulationConfig(**base_params)
+    else:
+        base_config = SimulationConfig(**base_params, experiment_name=experiment_name)
     return create_parameter_sweep_configs(base_config, param_grid)
 
 
@@ -334,27 +341,30 @@ def create_my_custom_experiment():
     
     # Define base parameters
     base_params = {
-        'num_agents': 4,
-        'state_dim': 5,
-        'action_dim': 5,
-        'history_len': 2,
-        'episode_len': 128,
-        'gamma': 0.95,
-        'batch_size': 256,
-        'num_episodes': 65536,
+        'num_agents': 3,
+        'state_dim': 3,
+        'action_dim': 3,
+        'history_len': 1,
+        'episode_len': 64,
+        'gamma': 0.99,
+        'batch_size': 64,
+        'num_episodes': 64 * 240,
         'use_episodic_freeze': True,
         'use_baseline': True,
-        'init_states_tuple': (0, 1, 2, 3),
-        'experiment_name': 'my_custom_experiment'
+        'init_states_tuple': None,
+        'experiment_name': 'optimality2',
+        'check_nash_equilibrium': False
     }
-    
+
+    N_EXPERIMENTS = 1
     # Define parameter sweep
-    param_grid = {
-        'learning_rate': [1e-4, 1e-3, 1e-2],
-        'gamma': [0.9, 0.95, 0.99],
-        'seed': [42, 123, 456, 789, 999]
-    }
-    
+
+    # rng = np.random.default_rng(seed=12345)  # master seed for reproducibility
+    # param_grid = {
+    #     'seed': rng.integers(low=0, high=2 ** 32 - 1, size=N_EXPERIMENTS).tolist()
+    # }
+    param_grid = {'seed': [3049403647,]}
+
     return create_custom_parameter_sweep(base_params, param_grid)
 
 

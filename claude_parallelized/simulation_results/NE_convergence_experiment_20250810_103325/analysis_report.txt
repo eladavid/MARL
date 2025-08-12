@@ -1,0 +1,48 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\NE_convergence_experiment_20250810_103325
+Total Runs: 3
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 492.3514
+  Std:  88.0908
+  Min:  423.9632
+  Max:  616.7245
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 219.2537
+  Std:  88.0908
+  Min:  94.8805
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 34.48
+  Std:  0.12
+  Min:  34.33
+  Max:  34.62
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_3003105692
+  Final Potential: 616.7245
+  Training Time: 34.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 640, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 2), 'seed': 3003105692, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_3003105692', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_3387213021
+  Final Potential: 423.9632
+  Training Time: 34.62s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 640, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 1), 'seed': 3387213021, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_3387213021', 'check_nash_equilibrium': False}
+
+PARAMETER ANALYSIS
+----------------------------------------
+Parameters that vary across runs:
+  seed: [976400780, 3003105692, 3387213021]
+  run_id: ['sweep_seed_3387213021', 'sweep_seed_3003105692', 'sweep_seed_976400780']
+  init_states_tuple: [(0, 1, 2), (0, 2, 1), (2, 0, 1)]

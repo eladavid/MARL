@@ -1,0 +1,22 @@
+{
+  "num_agents": 3,
+  "state_dim": 3,
+  "action_dim": 3,
+  "history_len": 1,
+  "episode_len": 64,
+  "gamma": 0.99,
+  "batch_size": 64,
+  "num_episodes": 8192,
+  "use_episodic_freeze": true,
+  "use_baseline": true,
+  "learning_rate": 0.001,
+  "init_states_tuple": [
+    2,
+    2,
+    0
+  ],
+  "seed": 432305847,
+  "experiment_name": "NE_convergence_experiment",
+  "run_id": "sweep_seed_432305847",
+  "check_nash_equilibrium": false
+}

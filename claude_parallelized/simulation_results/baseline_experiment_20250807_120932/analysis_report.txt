@@ -1,0 +1,47 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\baseline_experiment_20250807_120932
+Total Runs: 20
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 422.9632
+  Std:  0.0000
+  Min:  422.9632
+  Max:  422.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 287.6418
+  Std:  0.0000
+  Min:  287.6418
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 415.04
+  Std:  1.62
+  Min:  411.27
+  Max:  417.71
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: baseline_seed_0
+  Final Potential: 422.9632
+  Training Time: 417.09s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 128, 'num_episodes': 16384, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0, 2, 0), 'seed': 0, 'experiment_name': 'baseline_experiment', 'run_id': 'baseline_seed_0', 'check_nash_equilibrium': False}
+
+Worst Run: baseline_seed_0
+  Final Potential: 422.9632
+  Training Time: 417.09s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 128, 'num_episodes': 16384, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0, 2, 0), 'seed': 0, 'experiment_name': 'baseline_experiment', 'run_id': 'baseline_seed_0', 'check_nash_equilibrium': False}
+
+PARAMETER ANALYSIS
+----------------------------------------
+Parameters that vary across runs:
+  run_id: ['baseline_seed_8', 'baseline_seed_6', 'baseline_seed_4', 'baseline_seed_11', 'baseline_seed_3', 'baseline_seed_14', 'baseline_seed_13', 'baseline_seed_18', 'baseline_seed_9', 'baseline_seed_2', 'baseline_seed_10', 'baseline_seed_5', 'baseline_seed_0', 'baseline_seed_7', 'baseline_seed_15', 'baseline_seed_17', 'baseline_seed_12', 'baseline_seed_19', 'baseline_seed_1', 'baseline_seed_16']
+  seed: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]

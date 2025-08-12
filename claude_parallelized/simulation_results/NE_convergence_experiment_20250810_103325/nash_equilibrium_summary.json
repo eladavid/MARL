@@ -1,0 +1,58 @@
+{
+  "total_checked": 3,
+  "successful_checks": 3,
+  "nash_equilibria_found": 2,
+  "failed_checks": 0,
+  "nash_results": {
+    "sweep_seed_3003105692": {
+      "is_nash_equilibrium": true,
+      "check_time": 3.32584810256958,
+      "init_states_tuple": [
+        0,
+        1,
+        2
+      ],
+      "error_message": null
+    },
+    "sweep_seed_976400780": {
+      "is_nash_equilibrium": false,
+      "check_time": 160.65342736244202,
+      "init_states_tuple": [
+        0,
+        2,
+        1
+      ],
+      "error_message": null
+    },
+    "sweep_seed_3387213021": {
+      "is_nash_equilibrium": true,
+      "check_time": 484.4387147426605,
+      "init_states_tuple": [
+        2,
+        0,
+        1
+      ],
+      "error_message": null
+    }
+  },
+  "cluster_stats": {
+    "(0, 1, 2)": {
+      "total_runs": 1,
+      "successful_checks": 1,
+      "nash_equilibria": 1,
+      "nash_rate": 1.0
+    },
+    "(2, 0, 1)": {
+      "total_runs": 1,
+      "successful_checks": 1,
+      "nash_equilibria": 1,
+      "nash_rate": 1.0
+    },
+    "(0, 2, 1)": {
+      "total_runs": 1,
+      "successful_checks": 1,
+      "nash_equilibria": 0,
+      "nash_rate": 0.0
+    }
+  }
+}

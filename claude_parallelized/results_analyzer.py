@@ -36,9 +36,18 @@ class ResultsAnalyzer:
             run_id = config_file.stem.replace("config_", "")
             with open(config_file, 'r') as f:
                 self.configs[run_id] = json.load(f)
-        
+            self.configs[run_id] = self.lists_to_tuples(self.configs[run_id])
         print(f"Loaded {len(self.results)} simulation results")
-    
+
+    @staticmethod
+    def lists_to_tuples(obj):
+        if isinstance(obj, list):
+            return tuple(ResultsAnalyzer.lists_to_tuples(item) for item in obj)
+        elif isinstance(obj, dict):
+            return {key: ResultsAnalyzer.lists_to_tuples(value) for key, value in obj.items()}
+        else:
+            return obj
+
     def plot_learning_curves(self, run_ids: Optional[List[str]] = None, 
                            metric: str = 'returns', save_path: Optional[str] = None):
         """Plot learning curves for specified runs"""
@@ -93,8 +102,8 @@ class ResultsAnalyzer:
             potentials = result.episode_potentials
             
             # Apply smoothing
-            smoothed_potentials = self.moving_average(potentials, window=50)
-            plt.plot(smoothed_potentials, label=f'Run {run_id}', alpha=0.7)
+            # smoothed_potentials = self.moving_average(potentials, window=50)
+            plt.plot(potentials, label=f'Run {run_id}', alpha=0.7)
             
             # Add optimal and final performance lines
             plt.axhline(y=result.optimal_episode_discounted_potential, 
@@ -361,12 +370,14 @@ class ResultsAnalyzer:
             
             # Create a simple trajectory plot
             if len(trajectory) > 0 and len(trajectory[0]) >= 2:
-                # Plot trajectory for first 2 agents
+                # Plot trajectory for first 3 agents
                 agent_0_states = [state[0] for state in trajectory]
                 agent_1_states = [state[1] for state in trajectory]
+                agent_2_states = [state[2] for state in trajectory]
                 
                 axes[i].plot(agent_0_states, label='Agent 0', marker='o')
                 axes[i].plot(agent_1_states, label='Agent 1', marker='s')
+                axes[i].plot(agent_2_states, label='Agent 2', marker='d')
                 axes[i].set_xlabel('Time Step')
                 axes[i].set_ylabel('State')
                 axes[i].set_title(f'Run {run_id}\nFinal Potential: {result.argmax_episode_discounted_potential:.3f}')
@@ -385,7 +396,30 @@ class ResultsAnalyzer:
         if len(data) < window:
             return data
         return [np.mean(data[i:i+window]) for i in range(len(data) - window + 1)]
-    
+
+    def get_nash_equilibrium_stats(self) -> Dict:
+        """Get Nash equilibrium statistics from loaded results"""
+        nash_results = []
+        nash_check_times = []
+
+        for result in self.results.values():
+            if hasattr(result, 'is_nash_equilibrium') and result.is_nash_equilibrium is not None:
+                nash_results.append(result.is_nash_equilibrium)
+                if not result.is_nash_equilibrium:
+                    print(f"result is not nash!. run name: {result.config.run_id}. final trajectory: {result.final_trajectory}")
+                if hasattr(result, 'nash_check_time') and result.nash_check_time is not None:
+                    nash_check_times.append(result.nash_check_time)
+
+        if not nash_results:
+            return {"num_checked": 0, "message": "No Nash equilibrium checks performed"}
+
+        return {
+            "num_checked": len(nash_results),
+            "num_nash": sum(nash_results),
+            "nash_rate": np.mean(nash_results),
+        }
+
+
     def compare_runs(self, run_ids: List[str], save_dir: Optional[str] = None):
         """Generate comprehensive comparison plots for specific runs"""
         if save_dir:
@@ -405,6 +439,10 @@ class ResultsAnalyzer:
         # Trajectory comparison
         self.plot_trajectory_comparison(run_ids,
                                       save_path=save_dir / 'trajectory_comparison.png' if save_dir else None)
+
+        nash_stats = self.get_nash_equilibrium_stats()
+        print()
+        print(f"Nash equilibrium stats: {nash_stats}")
         
         print(f"Comparison plots {'saved to ' + str(save_dir) if save_dir else 'displayed'}")
 
@@ -452,4 +490,5 @@ if __name__ == '__main__':
     # Generate comparison plots for all runs
     comparison_dir = Path(experiment_dir) / "comparison_plots"
     run_ids = list(analyzer.results.keys())
-    analyzer.compare_runs(run_ids[:10], save_dir=comparison_dir)  # Compare first 10 runs
+    ids_to_sample = [829, 913, 1036, 0, 2,65, 6, 14, 144, 332, 1049, 553, 992]
+    analyzer.compare_runs([run_ids[i] for i  in ids_to_sample], save_dir=comparison_dir)  # Compare first 10 runs

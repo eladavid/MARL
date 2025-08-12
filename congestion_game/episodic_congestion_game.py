@@ -1,11 +1,13 @@
+import pickle
 from typing import List, Callable
 
 import numpy as np
 import torch
 from tqdm import tqdm
+import os
 
 from congestion_game.episodic_agent import EpisodicAgent
-from congestion_game.utils import one_hot, compute_discounted_returns
+from congestion_game.utils import one_hot, compute_discounted_returns, freeze_joint_policy
 
 
 class EpisodicCongestionGame:
@@ -85,34 +87,58 @@ class EpisodicCongestionGame:
         for other_agent in self.agents:
             agents_argmax_policy_maps.append(other_agent.get_argmax_policy_map(self.H))
             other_agent.policy_map = agents_argmax_policy_maps[-1]
-        # calc argmax return per agent
-        argmax_returns = []
-        episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
-        for i in range(self.N):
-            agent_rewards = torch.stack([step_reward[i] for step_reward in episode_rewards])
-            returns = compute_discounted_returns(agent_rewards.detach(), gamma=self.gamma)
-            argmax_returns.append(returns[0])
 
-        for i, agent in enumerate(self.agents):
-            all_agent_policy_maps = all_policy_maps[i]
-            # agent i ran over all policy maps. find best discounted return for agent i. determine if best is current policy
-            for ii, agent_i_policy in tqdm(enumerate(all_agent_policy_maps), desc=f"agent {i} policy comparison"):
-                self.reset()
-                # other agents frozen to argmax policy
-                for j, other_agent in enumerate(self.agents):
-                    if j != i:
-                        other_agent.policy_map = agents_argmax_policy_maps[j]
-
-                # agent i gets the fixed policy
-                agent.policy_map = agent_i_policy
-
-                episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
+        # load precalculated argmax policies to boost up performance
+        nash_filename = f'{self.N}_agents_{self.A}_states_actions_{self.H}_history_init_state_{[agent.init_state for agent in self.agents]}_nash_bool_dict.pkl'
+        if os.path.exists(nash_filename):
+            with open(nash_filename, 'rb') as f:
+                policies_nash_bool_dict = pickle.load(f)
+        else:
+            policies_nash_bool_dict = {}
+        frozen = freeze_joint_policy(agents_argmax_policy_maps)
+        if policies_nash_bool_dict.get(frozen):
+            return policies_nash_bool_dict.get(frozen)
+        else:
+            # calc argmax return per agent
+            argmax_returns = []
+            # agents_policies_returns = [{} for _ in range(self.N)]
+            episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
+            for i in range(self.N):
                 agent_rewards = torch.stack([step_reward[i] for step_reward in episode_rewards])
                 returns = compute_discounted_returns(agent_rewards.detach(), gamma=self.gamma)
+                argmax_returns.append(returns[0])
 
-                # if found a policy that strictly beats the argmax
-                if returns[0] > argmax_returns[i]:
-                    return False
+            for i, agent in enumerate(self.agents):
+                all_agent_policy_maps = all_policy_maps[i]
+                frozen_policies_list = []
+                # agent i ran over all policy maps. find best discounted return for agent i. determine if best is current policy
+                for ii, agent_i_policy in tqdm(enumerate(all_agent_policy_maps), desc=f"agent {i} policy comparison"):
+                    self.reset()
+                    # other agents frozen to argmax policy
+                    for j, other_agent in enumerate(self.agents):
+                        if j != i:
+                            other_agent.policy_map = agents_argmax_policy_maps[j]
+                            # frozen_policies_list.append(other_agent.policy_map)
+                        # else:
+                        #     frozen_policies_list.append(agent_i_policy)
+
+                    # agent i gets the fixed policy
+                    agent.policy_map = agent_i_policy
+
+                    episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
+                    agent_rewards = torch.stack([step_reward[i] for step_reward in episode_rewards])
+                    returns = compute_discounted_returns(agent_rewards.detach(), gamma=self.gamma)
+
+                    # agents_policies_returns[i][freeze_joint_policy(frozen_policies_list)] = returns[0]
+                    # if found a policy that strictly beats the argmax
+                    if returns[0] > argmax_returns[i]:
+                        policies_nash_bool_dict[frozen] = False
+                        with open(nash_filename, 'wb') as f:
+                            pickle.dump(policies_nash_bool_dict, f)
+                        return False
+        policies_nash_bool_dict[frozen] = True
+        with open(nash_filename, 'wb') as f:
+            pickle.dump(policies_nash_bool_dict, f)
         return True
 
 

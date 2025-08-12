@@ -1,0 +1,1300 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT (BY INITIAL STATE)
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\NE_convergence_experiment_20250810_143803
+Total Runs: 1500
+Number of Initial States: 27
+
+============================================================
+INITIAL STATE: (1.0, 1.0, 1.0)
+============================================================
+Number of runs for this state: 58
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 602.2927
+  Std:  49.3516
+  Min:  420.9632
+  Max:  615.7245
+
+Optimal Performance: 708.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 106.3123
+  Std:  49.3516
+  Min:  92.8805
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 223.45
+  Std:  12.54
+  Min:  184.39
+  Max:  252.51
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1000209882
+  Final Potential: 615.7245
+  Training Time: 218.11s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 1), 'seed': 1000209882, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1000209882', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_2141779427
+  Final Potential: 420.9632
+  Training Time: 213.78s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 1), 'seed': 2141779427, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_2141779427', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 58
+Nash equilibria found: 58
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 2.0, 0.0)
+============================================================
+Number of runs for this state: 58
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 423.9632
+  Std:  0.0000
+  Min:  423.9632
+  Max:  423.9632
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 230.43
+  Std:  10.42
+  Min:  188.75
+  Max:  249.97
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1004931000
+  Final Potential: 423.9632
+  Training Time: 235.73s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 0), 'seed': 1004931000, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1004931000', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1004931000
+  Final Potential: 423.9632
+  Training Time: 235.73s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 0), 'seed': 1004931000, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1004931000', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 58
+Nash equilibria found: 58
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 2.0, 1.0)
+============================================================
+Number of runs for this state: 61
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 616.7245
+  Std:  0.0000
+  Min:  616.7245
+  Max:  616.7245
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 207.81
+  Std:  11.31
+  Min:  176.96
+  Max:  225.86
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1005621892
+  Final Potential: 616.7245
+  Training Time: 210.47s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 1), 'seed': 1005621892, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1005621892', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1005621892
+  Final Potential: 616.7245
+  Training Time: 210.47s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 1), 'seed': 1005621892, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1005621892', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 61
+Nash equilibria found: 61
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 1.0, 2.0)
+============================================================
+Number of runs for this state: 59
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 614.7245
+  Std:  0.0000
+  Min:  614.7245
+  Max:  614.7245
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 216.89
+  Std:  9.57
+  Min:  186.23
+  Max:  239.51
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1008361208
+  Final Potential: 614.7245
+  Training Time: 217.73s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 2), 'seed': 1008361208, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1008361208', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1008361208
+  Final Potential: 614.7245
+  Training Time: 217.73s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 2), 'seed': 1008361208, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1008361208', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 59
+Nash equilibria found: 59
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 0.0, 2.0)
+============================================================
+Number of runs for this state: 58
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 424.9632
+  Std:  0.0000
+  Min:  424.9632
+  Max:  424.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 231.94
+  Std:  12.13
+  Min:  193.81
+  Max:  252.36
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1021631786
+  Final Potential: 424.9632
+  Training Time: 232.63s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 2), 'seed': 1021631786, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1021631786', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1021631786
+  Final Potential: 424.9632
+  Training Time: 232.63s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 2), 'seed': 1021631786, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1021631786', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 58
+Nash equilibria found: 58
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 1.0, 1.0)
+============================================================
+Number of runs for this state: 54
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 591.4777
+  Std:  65.4195
+  Min:  421.9632
+  Max:  616.7245
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 118.1273
+  Std:  65.4195
+  Min:  92.8805
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 225.67
+  Std:  15.34
+  Min:  179.02
+  Max:  254.84
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1025451466
+  Final Potential: 616.7245
+  Training Time: 214.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 1), 'seed': 1025451466, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1025451466', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1247132544
+  Final Potential: 421.9632
+  Training Time: 240.02s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 1), 'seed': 1247132544, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1247132544', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 54
+Nash equilibria found: 54
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 0.0, 0.0)
+============================================================
+Number of runs for this state: 55
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 424.9632
+  Std:  0.0000
+  Min:  424.9632
+  Max:  424.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 225.83
+  Std:  12.25
+  Min:  185.87
+  Max:  244.90
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1028761441
+  Final Potential: 424.9632
+  Training Time: 233.87s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 0), 'seed': 1028761441, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1028761441', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1028761441
+  Final Potential: 424.9632
+  Training Time: 233.87s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 0), 'seed': 1028761441, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1028761441', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 55
+Nash equilibria found: 55
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 1.0, 2.0)
+============================================================
+Number of runs for this state: 48
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 616.7245
+  Std:  0.0000
+  Min:  616.7245
+  Max:  616.7245
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 207.03
+  Std:  9.17
+  Min:  176.91
+  Max:  227.99
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1034520111
+  Final Potential: 616.7245
+  Training Time: 208.06s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 2), 'seed': 1034520111, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1034520111', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1034520111
+  Final Potential: 616.7245
+  Training Time: 208.06s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 2), 'seed': 1034520111, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1034520111', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 48
+Nash equilibria found: 48
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 2.0, 1.0)
+============================================================
+Number of runs for this state: 52
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 614.7245
+  Std:  0.0000
+  Min:  614.7245
+  Max:  614.7245
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 218.64
+  Std:  11.12
+  Min:  184.27
+  Max:  237.58
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1035841614
+  Final Potential: 614.7245
+  Training Time: 218.46s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 1), 'seed': 1035841614, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1035841614', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1035841614
+  Final Potential: 614.7245
+  Training Time: 218.46s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 1), 'seed': 1035841614, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1035841614', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 52
+Nash equilibria found: 52
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 1.0, 0.0)
+============================================================
+Number of runs for this state: 49
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 509.6748
+  Std:  98.7007
+  Min:  424.9632
+  Max:  712.6050
+
+Optimal Performance: 712.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 202.9302
+  Std:  98.7007
+  Min:  0.0000
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 222.40
+  Std:  12.90
+  Min:  186.67
+  Max:  249.79
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_3049403647
+  Final Potential: 712.6050
+  Training Time: 233.16s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 0), 'seed': 3049403647, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_3049403647', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1152087863
+  Final Potential: 424.9632
+  Training Time: 244.54s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 0), 'seed': 1152087863, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1152087863', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 49
+Nash equilibria found: 49
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 1.0, 0.0)
+============================================================
+Number of runs for this state: 56
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 422.9632
+  Std:  0.0000
+  Min:  422.9632
+  Max:  422.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 287.6418
+  Std:  0.0000
+  Min:  287.6418
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 233.86
+  Std:  9.35
+  Min:  191.98
+  Max:  245.99
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1044471795
+  Final Potential: 422.9632
+  Training Time: 232.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0), 'seed': 1044471795, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1044471795', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1044471795
+  Final Potential: 422.9632
+  Training Time: 232.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0), 'seed': 1044471795, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1044471795', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 56
+Nash equilibria found: 56
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 2.0, 0.0)
+============================================================
+Number of runs for this state: 54
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 424.9632
+  Std:  0.0000
+  Min:  424.9632
+  Max:  424.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 231.60
+  Std:  13.83
+  Min:  191.70
+  Max:  251.26
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1047209416
+  Final Potential: 424.9632
+  Training Time: 247.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 0), 'seed': 1047209416, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1047209416', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1047209416
+  Final Potential: 424.9632
+  Training Time: 247.50s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 0), 'seed': 1047209416, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1047209416', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 54
+Nash equilibria found: 54
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 1.0, 0.0)
+============================================================
+Number of runs for this state: 63
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 423.9632
+  Std:  0.0000
+  Min:  423.9632
+  Max:  423.9632
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 287.6418
+  Std:  0.0000
+  Min:  287.6418
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 231.19
+  Std:  10.27
+  Min:  196.19
+  Max:  249.01
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_104832471
+  Final Potential: 423.9632
+  Training Time: 203.71s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 0), 'seed': 104832471, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_104832471', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_104832471
+  Final Potential: 423.9632
+  Training Time: 203.71s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 0), 'seed': 104832471, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_104832471', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 63
+Nash equilibria found: 63
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 1.0, 1.0)
+============================================================
+Number of runs for this state: 59
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 617.7245
+  Std:  0.0000
+  Min:  617.7245
+  Max:  617.7245
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 92.8805
+  Std:  0.0000
+  Min:  92.8805
+  Max:  92.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 212.97
+  Std:  11.90
+  Min:  177.66
+  Max:  229.82
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1057684339
+  Final Potential: 617.7245
+  Training Time: 178.83s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 1), 'seed': 1057684339, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1057684339', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1057684339
+  Final Potential: 617.7245
+  Training Time: 178.83s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 1, 1), 'seed': 1057684339, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1057684339', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 59
+Nash equilibria found: 59
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 2.0, 2.0)
+============================================================
+Number of runs for this state: 60
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 551.4708
+  Std:  90.8686
+  Min:  422.9632
+  Max:  615.7245
+
+Optimal Performance: 708.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 157.1343
+  Std:  90.8686
+  Min:  92.8805
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 228.32
+  Std:  12.97
+  Min:  195.06
+  Max:  253.28
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1059857878
+  Final Potential: 615.7245
+  Training Time: 234.36s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 2), 'seed': 1059857878, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1059857878', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1247126934
+  Final Potential: 422.9632
+  Training Time: 238.99s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 2, 2), 'seed': 1247126934, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1247126934', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 60
+Nash equilibria found: 60
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 0.0, 0.0)
+============================================================
+Number of runs for this state: 44
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 425.9632
+  Std:  0.0000
+  Min:  425.9632
+  Max:  425.9632
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 224.31
+  Std:  13.60
+  Min:  187.45
+  Max:  246.63
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1065858366
+  Final Potential: 425.9632
+  Training Time: 232.42s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 0), 'seed': 1065858366, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1065858366', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1065858366
+  Final Potential: 425.9632
+  Training Time: 232.42s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 0), 'seed': 1065858366, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1065858366', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 44
+Nash equilibria found: 44
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 2.0, 2.0)
+============================================================
+Number of runs for this state: 67
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 570.6920
+  Std:  82.1846
+  Min:  423.9632
+  Max:  616.7245
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 138.9131
+  Std:  82.1846
+  Min:  92.8805
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 224.60
+  Std:  16.12
+  Min:  179.34
+  Max:  248.04
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1066207224
+  Final Potential: 616.7245
+  Training Time: 192.14s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 2), 'seed': 1066207224, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1066207224', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1085218666
+  Final Potential: 423.9632
+  Training Time: 242.31s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 2), 'seed': 1085218666, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1085218666', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 67
+Nash equilibria found: 67
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 0.0, 1.0)
+============================================================
+Number of runs for this state: 47
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 422.9632
+  Std:  0.0000
+  Min:  422.9632
+  Max:  422.9632
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 287.6418
+  Std:  0.0000
+  Min:  287.6418
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 230.60
+  Std:  12.61
+  Min:  190.84
+  Max:  251.71
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1070512745
+  Final Potential: 422.9632
+  Training Time: 232.19s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 1), 'seed': 1070512745, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1070512745', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1070512745
+  Final Potential: 422.9632
+  Training Time: 232.19s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 1), 'seed': 1070512745, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1070512745', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 47
+Nash equilibria found: 47
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 2.0, 1.0)
+============================================================
+Number of runs for this state: 46
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 615.7245
+  Std:  0.0000
+  Min:  615.7245
+  Max:  615.7245
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 219.92
+  Std:  11.71
+  Min:  183.70
+  Max:  241.86
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1086581108
+  Final Potential: 615.7245
+  Training Time: 222.30s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 1), 'seed': 1086581108, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1086581108', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1086581108
+  Final Potential: 615.7245
+  Training Time: 222.30s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 2, 1), 'seed': 1086581108, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1086581108', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 46
+Nash equilibria found: 46
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 0.0, 1.0)
+============================================================
+Number of runs for this state: 53
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 423.9632
+  Std:  0.0000
+  Min:  423.9632
+  Max:  423.9632
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 287.6418
+  Std:  0.0000
+  Min:  287.6418
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 228.07
+  Std:  14.50
+  Min:  188.98
+  Max:  249.88
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1096214611
+  Final Potential: 423.9632
+  Training Time: 202.69s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 1), 'seed': 1096214611, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1096214611', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1096214611
+  Final Potential: 423.9632
+  Training Time: 202.69s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 0, 1), 'seed': 1096214611, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1096214611', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 53
+Nash equilibria found: 53
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 2.0, 2.0)
+============================================================
+Number of runs for this state: 60
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 617.7245
+  Std:  0.0000
+  Min:  617.7245
+  Max:  617.7245
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 92.8805
+  Std:  0.0000
+  Min:  92.8805
+  Max:  92.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 213.03
+  Std:  14.23
+  Min:  176.04
+  Max:  238.69
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1096954346
+  Final Potential: 617.7245
+  Training Time: 213.97s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 2), 'seed': 1096954346, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1096954346', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1096954346
+  Final Potential: 617.7245
+  Training Time: 213.97s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 2), 'seed': 1096954346, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1096954346', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 60
+Nash equilibria found: 60
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 2.0, 0.0)
+============================================================
+Number of runs for this state: 62
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 516.1258
+  Std:  96.1799
+  Min:  425.9632
+  Max:  618.7245
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 195.4793
+  Std:  96.1799
+  Min:  92.8805
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 221.99
+  Std:  12.09
+  Min:  173.74
+  Max:  245.57
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1214247622
+  Final Potential: 618.7245
+  Training Time: 210.58s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 0), 'seed': 1214247622, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1214247622', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1114185977
+  Final Potential: 425.9632
+  Training Time: 222.33s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 0), 'seed': 1114185977, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1114185977', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 62
+Nash equilibria found: 62
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 0.0, 1.0)
+============================================================
+Number of runs for this state: 48
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 553.6999
+  Std:  97.1405
+  Min:  424.9632
+  Max:  712.6050
+
+Optimal Performance: 712.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 158.9051
+  Std:  97.1405
+  Min:  0.0000
+  Max:  287.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 220.87
+  Std:  13.22
+  Min:  179.72
+  Max:  240.18
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_3257370200
+  Final Potential: 712.6050
+  Training Time: 235.60s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 1), 'seed': 3257370200, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_3257370200', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1119179194
+  Final Potential: 424.9632
+  Training Time: 197.76s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 1), 'seed': 1119179194, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1119179194', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 48
+Nash equilibria found: 48
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 0.0, 2.0)
+============================================================
+Number of runs for this state: 71
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 501.9818
+  Std:  94.2052
+  Min:  425.9632
+  Max:  618.7245
+
+Optimal Performance: 711.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 209.6233
+  Std:  94.2052
+  Min:  92.8805
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 220.40
+  Std:  14.01
+  Min:  167.40
+  Max:  246.02
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1144269602
+  Final Potential: 618.7245
+  Training Time: 189.85s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 2), 'seed': 1144269602, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1144269602', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1129763209
+  Final Potential: 425.9632
+  Training Time: 224.32s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 2), 'seed': 1129763209, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1129763209', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 71
+Nash equilibria found: 71
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (2.0, 1.0, 2.0)
+============================================================
+Number of runs for this state: 61
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 615.7245
+  Std:  0.0000
+  Min:  615.7245
+  Max:  615.7245
+
+Optimal Performance: 710.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 94.8805
+  Std:  0.0000
+  Min:  94.8805
+  Max:  94.8805
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 211.47
+  Std:  12.89
+  Min:  176.21
+  Max:  228.66
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1179275586
+  Final Potential: 615.7245
+  Training Time: 214.60s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 2), 'seed': 1179275586, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1179275586', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1179275586
+  Final Potential: 615.7245
+  Training Time: 214.60s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (2, 1, 2), 'seed': 1179275586, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1179275586', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 61
+Nash equilibria found: 61
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (1.0, 0.0, 2.0)
+============================================================
+Number of runs for this state: 44
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 423.9632
+  Std:  0.0000
+  Min:  423.9632
+  Max:  423.9632
+
+Optimal Performance: 709.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 230.82
+  Std:  12.50
+  Min:  187.95
+  Max:  246.91
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1210451926
+  Final Potential: 423.9632
+  Training Time: 231.42s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 2), 'seed': 1210451926, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1210451926', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1210451926
+  Final Potential: 423.9632
+  Training Time: 231.42s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 0, 2), 'seed': 1210451926, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1210451926', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 44
+Nash equilibria found: 44
+Nash equilibrium rate: 100.00%
+
+============================================================
+INITIAL STATE: (0.0, 0.0, 0.0)
+============================================================
+Number of runs for this state: 53
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 426.9632
+  Std:  0.0000
+  Min:  426.9632
+  Max:  426.9632
+
+Optimal Performance: 712.6050
+
+Convergence Gap (Optimal - Final):
+  Mean: 285.6418
+  Std:  0.0000
+  Min:  285.6418
+  Max:  285.6418
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 216.26
+  Std:  13.54
+  Min:  180.50
+  Max:  239.93
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_1235218357
+  Final Potential: 426.9632
+  Training Time: 225.65s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 0), 'seed': 1235218357, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1235218357', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_1235218357
+  Final Potential: 426.9632
+  Training Time: 225.65s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 0, 0), 'seed': 1235218357, 'experiment_name': 'NE_convergence_experiment', 'run_id': 'sweep_seed_1235218357', 'check_nash_equilibrium': False}
+
+NASH EQUILIBRIUM STATISTICS
+----------------------------------------
+Runs checked: 53
+Nash equilibria found: 53
+Nash equilibrium rate: 100.00%
+
+================================================================================
+OVERALL SUMMARY (ALL INITIAL STATES)
+================================================================================
+OVERALL PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance (all states):
+  Mean: 520.3788
+  Std:  96.2890
+  Min:  420.9632
+  Max:  712.6050
+
+Convergence Gap (all states):
+  Mean: 190.3143
+  Std:  96.5389
+  Min:  0.0000
+  Max:  287.6418
+
+OVERALL TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds, all states):
+  Mean: 222.51
+  Std:  14.67
+  Min:  167.40
+  Max:  254.84

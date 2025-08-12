@@ -1,0 +1,45 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\quick_test_20250807_120258
+Total Runs: 1
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 243.5177
+  Std:  0.0000
+  Min:  243.5177
+  Max:  243.5177
+
+Optimal Performance: 411.5295
+
+Convergence Gap (Optimal - Final):
+  Mean: 168.0118
+  Std:  0.0000
+  Min:  168.0118
+  Max:  168.0118
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 29.03
+  Std:  0.00
+  Min:  29.03
+  Max:  29.03
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: quick_test_seed_42
+  Final Potential: 243.5177
+  Training Time: 29.03s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 32, 'gamma': 0.99, 'batch_size': 32, 'num_episodes': 320, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0), 'seed': 42, 'experiment_name': 'quick_test', 'run_id': 'quick_test_seed_42', 'check_nash_equilibrium': True}
+
+Worst Run: quick_test_seed_42
+  Final Potential: 243.5177
+  Training Time: 29.03s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 32, 'gamma': 0.99, 'batch_size': 32, 'num_episodes': 320, 'use_episodic_freeze': True, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 0), 'seed': 42, 'experiment_name': 'quick_test', 'run_id': 'quick_test_seed_42', 'check_nash_equilibrium': True}
+
+PARAMETER ANALYSIS
+----------------------------------------
+All runs used identical parameters
