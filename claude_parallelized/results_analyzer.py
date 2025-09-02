@@ -490,5 +490,7 @@ if __name__ == '__main__':
     # Generate comparison plots for all runs
     comparison_dir = Path(experiment_dir) / "comparison_plots"
     run_ids = list(analyzer.results.keys())
-    ids_to_sample = [829, 913, 1036, 0, 2,65, 6, 14, 144, 332, 1049, 553, 992]
-    analyzer.compare_runs([run_ids[i] for i  in ids_to_sample], save_dir=comparison_dir)  # Compare first 10 runs
+    best_runs = {k: r for k, r in analyzer.results.items() if r.optimal_episode_discounted_potential - r.argmax_episode_discounted_potential < 50}
+    # ids_to_sample = [339, 376, 395]
+    # analyzer.compare_runs([run_ids[i] for i in ids_to_sample], save_dir=comparison_dir)  # Compare first 10 runs
+    analyzer.compare_runs(run_ids, save_dir=comparison_dir)  # Compare first 10 runs

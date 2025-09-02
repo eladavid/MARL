@@ -1,0 +1,48 @@
+================================================================================
+SIMULATION RESULTS SUMMARY REPORT
+================================================================================
+Experiment Directory: C:\Users\eladdavid1\mac_reinforce\claude_parallelized\simulation_results\classic_reinforce_analyze_earlystopping_of_best_20250901_184446
+Total Runs: 3
+
+PERFORMANCE STATISTICS
+----------------------------------------
+Final Performance:
+  Mean: 710.9384
+  Std:  0.9428
+  Min:  709.6050
+  Max:  711.6050
+
+Optimal Performance: 710.9384
+
+Convergence Gap (Optimal - Final):
+  Mean: 0.0000
+  Std:  0.0000
+  Min:  0.0000
+  Max:  0.0000
+
+TRAINING STATISTICS
+----------------------------------------
+Training Time (seconds):
+  Mean: 478.44
+  Std:  1.04
+  Min:  476.98
+  Max:  479.37
+
+BEST AND WORST RUNS
+----------------------------------------
+Best Run: sweep_seed_4146964028
+  Final Potential: 711.6050
+  Training Time: 476.98s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': False, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (0, 2, 1), 'seed': 4146964028, 'experiment_name': 'classic_reinforce_analyze_earlystopping_of_best', 'run_id': 'sweep_seed_4146964028', 'check_nash_equilibrium': False}
+
+Worst Run: sweep_seed_773654992
+  Final Potential: 709.6050
+  Training Time: 478.96s
+  Config: {'num_agents': 3, 'state_dim': 3, 'action_dim': 3, 'history_len': 1, 'episode_len': 64, 'gamma': 0.99, 'batch_size': 64, 'num_episodes': 8192, 'use_episodic_freeze': False, 'use_baseline': True, 'learning_rate': 0.001, 'init_states_tuple': (1, 1, 2), 'seed': 773654992, 'experiment_name': 'classic_reinforce_analyze_earlystopping_of_best', 'run_id': 'sweep_seed_773654992', 'check_nash_equilibrium': False}
+
+PARAMETER ANALYSIS
+----------------------------------------
+Parameters that vary across runs:
+  seed: [773654992, 4146964028, 645114141]
+  init_states_tuple: [(0, 2, 1), (1, 1, 2)]
+  run_id: ['sweep_seed_773654992', 'sweep_seed_645114141', 'sweep_seed_4146964028']

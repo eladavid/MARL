@@ -596,7 +596,8 @@ def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
         for optimizer in independent_optimizers:
             optimizer.zero_grad()
         total_loss.backward()
-        for optimizer in independent_optimizers:
+        for i, optimizer in enumerate(independent_optimizers):
+            # torch.nn.utils.clip_grad_norm_(env.agents[i].policy_func.parameters(), max_norm=0.1)  # Example max_norm
             optimizer.step()
 
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())

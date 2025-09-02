@@ -1,0 +1,22 @@
+{
+  "num_runs": 3,
+  "final_potential_stats": {
+    "mean": 710.9383748372396,
+    "std": 0.9428090415820634,
+    "min": 709.6050415039062,
+    "max": 711.6050415039062
+  },
+  "optimal_potential": 710.9383748372396,
+  "training_time_stats": {
+    "mean": 478.43599104881287,
+    "std": 1.044959890130817,
+    "min": 476.97739124298096,
+    "max": 479.37090396881104
+  },
+  "convergence_rate": 0.0,
+  "run_ids": [
+    "sweep_seed_4146964028",
+    "sweep_seed_773654992",
+    "sweep_seed_645114141"
+  ]
+}
