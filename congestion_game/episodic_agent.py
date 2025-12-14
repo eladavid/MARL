@@ -24,18 +24,20 @@ class EpisodicAgent:
             dist = torch.distributions.Categorical(probs)
             action = dist.sample()
             log_prob = dist.log_prob(action)
+            entropy = dist.entropy()
             if use_episodic_freeze:
-                self.policy_map[state_key] = action, log_prob
+                self.policy_map[state_key] = action, log_prob, entropy
         else:
-            action, log_prob = self.policy_map[state_key]
-        return action, log_prob
+            action, log_prob, entropy = self.policy_map[state_key]
+        return action, log_prob, entropy
 
     def argmax_inference(self, augmented_state):
-        probs = self.policy_func(torch.tensor(augmented_state))
+        probs = self.policy_func(torch.tensor(augmented_state, dtype=torch.long))
         dist = torch.distributions.Categorical(probs)
+        entropy = dist.entropy()
         action = torch.argmax(probs)
         log_prob = dist.log_prob(action)
-        return action, log_prob
+        return action, log_prob, entropy
 
     def get_argmax_policy_map(self, history_len):
         # iterate over all states and produce the argmax policy map
@@ -46,8 +48,8 @@ class EpisodicAgent:
 
         argmax_policy_map = {}
         for augmented_state in all_augmented_states:
-            action, log_prob = self.argmax_inference(augmented_state)
-            argmax_policy_map[tuple(augmented_state)] = action, log_prob
+            action, log_prob, entropy = self.argmax_inference(augmented_state)
+            argmax_policy_map[tuple(augmented_state)] = action, log_prob, entropy
         return argmax_policy_map
 
     def update_state(self, new_state):
@@ -90,7 +92,7 @@ class EpisodicAgent:
         all_policy_maps = []
         for assignment in all_action_assignments:
             policy_map = {
-                state: (torch.tensor(action), torch.tensor(0.)) for state, action in zip(all_augmented_states, assignment)
+                state: (torch.tensor(action), torch.tensor(0.), torch.tensor(0.)) for state, action in zip(all_augmented_states, assignment)
             }
             all_policy_maps.append(policy_map)
 

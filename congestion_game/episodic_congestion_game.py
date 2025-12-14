@@ -39,34 +39,37 @@ class EpisodicCongestionGame:
         # curr_states = [agent.state[0] for agent in self.agents]
         aug_states = [agent.get_augmented_state(self.H) for agent in self.agents]
         if is_inference:
-            actions_and_logprobs = [agent.argmax_inference(s)
-                                    for agent, s in zip(self.agents, aug_states)]
+            actions_logprobs_entropy = [agent.argmax_inference(s)
+                                        for agent, s in zip(self.agents, aug_states)]
         else:
-            actions_and_logprobs = [agent.act(s, use_episodic_freeze=self.use_episodic_freeze)
-                                    for agent, s in zip(self.agents, aug_states)]
-        actions = torch.stack([elem[0] for elem in actions_and_logprobs])
+            actions_logprobs_entropy = [agent.act(s, use_episodic_freeze=self.use_episodic_freeze)
+                                        for agent, s in zip(self.agents, aug_states)]
+        actions = torch.stack([elem[0] for elem in actions_logprobs_entropy])
         g_term = self.g_func(actions, self.N)
         u_terms = [self.u_funcs[i](self.agents[i].state[0], actions[i]) for i in range(self.N)]
         rewards = [g_term + u for u in u_terms]
         potential = g_term + sum(u_terms)
-        logprobs = torch.stack([elem[1] for elem in actions_and_logprobs], dim=0)
+        logprobs = torch.stack([elem[1] for elem in actions_logprobs_entropy], dim=0)
+        entropys = torch.stack([elem[2] for elem in actions_logprobs_entropy], dim=0)
 
         self.update_states(actions)
-        return actions, logprobs, rewards, potential
+        return actions, logprobs, rewards, potential, entropys
 
     def do_episode(self, is_inference: bool = False):
         episode_actions = []
         episode_logprobs = []
         episode_rewards = []
         episode_potentials = []
+        episode_entropys = []
         for _ in range(self.T):
-            actions, logprobs, rewards, potential = self.step(is_inference=is_inference)
+            actions, logprobs, rewards, potential, entropys = self.step(is_inference=is_inference)
             episode_actions.append(actions)
             episode_logprobs.append(logprobs)
             episode_rewards.append(rewards)
             episode_potentials.append(potential)
+            episode_entropys.append(entropys)
 
-        return episode_actions, episode_logprobs, episode_rewards, episode_potentials
+        return episode_actions, episode_logprobs, episode_rewards, episode_potentials, episode_entropys
 
     def update_states(self, actions):
         for i, agent in enumerate(self.agents):
@@ -87,7 +90,7 @@ class EpisodicCongestionGame:
             other_agent.policy_map = agents_argmax_policy_maps[-1]
         # calc argmax return per agent
         argmax_returns = []
-        episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
+        episode_actions, episode_logprobs, episode_rewards, episode_potentials, episode_entropys = self.do_episode(is_inference=False)
         for i in range(self.N):
             agent_rewards = torch.stack([step_reward[i] for step_reward in episode_rewards])
             returns = compute_discounted_returns(agent_rewards.detach(), gamma=self.gamma)
@@ -106,7 +109,7 @@ class EpisodicCongestionGame:
                 # agent i gets the fixed policy
                 agent.policy_map = agent_i_policy
 
-                episode_actions, episode_logprobs, episode_rewards, episode_potentials = self.do_episode(is_inference=False)
+                episode_actions, episode_logprobs, episode_rewards, episode_potentials, episode_entropys = self.do_episode(is_inference=False)
                 agent_rewards = torch.stack([step_reward[i] for step_reward in episode_rewards])
                 returns = compute_discounted_returns(agent_rewards.detach(), gamma=self.gamma)
 
