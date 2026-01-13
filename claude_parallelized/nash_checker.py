@@ -25,7 +25,7 @@ import json
 try:
     from congestion_game.episodic_agent import EpisodicAgent
     from congestion_game.episodic_congestion_game import EpisodicCongestionGame
-    from congestion_game.policies import DiscreteStatePolicyNoEmbeddings
+    from congestion_game.policies import DiscreteStatePolicyNoEmbeddings, DirectTabularPolicy
     from congestion_game.reward_functions import g_func, make_u_i
     from congestion_game.utils import compute_discounted_returns, freeze_joint_policy
 except ImportError as e:
@@ -69,11 +69,12 @@ class NashEquilibriumChecker:
         for i in range(config.num_agents):
             # Create agent with same configuration as training
             init_state = config.init_states_tuple[i]
-            policy = DiscreteStatePolicyNoEmbeddings(
-                state_vocab_sizes=(config.history_len + 1) * [config.state_dim],
-                hidden_dim=config.action_dim,
-                num_actions=config.action_dim
-            )
+            # policy = DiscreteStatePolicyNoEmbeddings(
+            #     state_vocab_sizes=(config.history_len + 1) * [config.state_dim],
+            #     hidden_dim=config.action_dim,
+            #     num_actions=config.action_dim
+            policy = DirectTabularPolicy(state_vocab_sizes=(config.history_len + 1) * [config.state_dim],num_actions=config.action_dim)
+
             agent = EpisodicAgent(
                 config.state_dim, 
                 config.action_dim,

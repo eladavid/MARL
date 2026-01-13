@@ -80,7 +80,7 @@ class ResultsAnalyzer:
             plt.xlabel('Episode')
             plt.ylabel(ylabel)
             plt.title(f'Agent {agent_idx} {metric.capitalize()}')
-            plt.legend()
+            # plt.legend()
             plt.grid(True, alpha=0.3)
         
         plt.tight_layout()
@@ -116,13 +116,38 @@ class ResultsAnalyzer:
         plt.xlabel('Episode')
         plt.ylabel('Discounted Potential')
         plt.title('Potential Function Evolution')
-        plt.legend()
+        # plt.legend()
         plt.grid(True, alpha=0.3)
         
         if save_path:
             plt.savefig(save_path, dpi=300, bbox_inches='tight')
         plt.show()
-    
+
+    def plot_optimality_gap_histogram(self, run_ids: Optional[List[str]] = None,
+                                      save_path: Optional[str] = None):
+        """Plot optimality gap histogram"""
+        if run_ids is None:
+            run_ids = list(self.results.keys())
+
+        optimality_ratios = []
+        for run_id in run_ids:
+            result = self.results[run_id]
+            # if result.is_nash_equilibrium:
+            optimality_ratios.append(result.argmax_episode_discounted_potential / result.optimal_episode_discounted_potential)
+
+        plt.figure(figsize=(12, 8))
+        plt.title('Optimality Ratio Histogram')
+        plt.xlabel('optimality ratio')
+        plt.ylabel('frequency')
+        # plot histogram of optimality gaps
+        plt.hist(optimality_ratios, weights=np.ones_like(optimality_ratios) / len(optimality_ratios))
+        if save_path:
+            plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.xticks(np.arange(0, 1.1, 0.1))
+        plt.show()
+
+
+
     def plot_parameter_sweep_heatmap(self, param1: str, param2: str, 
                                    metric: str = 'final_potential',
                                    save_path: Optional[str] = None):
@@ -429,16 +454,19 @@ class ResultsAnalyzer:
         # Learning curves
         self.plot_learning_curves(run_ids, metric='returns', 
                                 save_path=save_dir / 'learning_curves_returns.png' if save_dir else None)
-        self.plot_learning_curves(run_ids, metric='losses',
-                                save_path=save_dir / 'learning_curves_losses.png' if save_dir else None)
+        # self.plot_learning_curves(run_ids, metric='losses',
+        #                         save_path=save_dir / 'learning_curves_losses.png' if save_dir else None)
         
         # Potential comparison
         self.plot_potential_comparison(run_ids,
                                      save_path=save_dir / 'potential_comparison.png' if save_dir else None)
         
-        # Trajectory comparison
-        self.plot_trajectory_comparison(run_ids,
-                                      save_path=save_dir / 'trajectory_comparison.png' if save_dir else None)
+        # # Trajectory comparison
+        # self.plot_trajectory_comparison(run_ids,
+        #                               save_path=save_dir / 'trajectory_comparison.png' if save_dir else None)
+
+        self.plot_optimality_gap_histogram(run_ids,
+                                           save_path=save_dir / 'optimality_gap_histogram.png' if save_dir else None)
 
         nash_stats = self.get_nash_equilibrium_stats()
         print()

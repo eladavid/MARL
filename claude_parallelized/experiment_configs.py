@@ -345,25 +345,25 @@ def create_my_custom_experiment():
         'state_dim': 3,
         'action_dim': 3,
         'history_len': 1,
-        'episode_len': 64,
+        'episode_len': 16,
         'gamma': 0.99,
-        'batch_size': 64,
-        'num_episodes': 128 * 64,
+        'batch_size': 4,
+        'num_episodes': 1500,
         'use_episodic_freeze': False,
         'use_baseline': True,
         'init_states_tuple': None,
-        'experiment_name': 'classic_reinforce_analyze_earlystopping_of_best',
+        'experiment_name': 'classic_reinforce_gradual_batchsize_direct_parameterization_w_10%_exploration',
         'check_nash_equilibrium': False
     }
 
-    N_EXPERIMENTS = 3
+    N_EXPERIMENTS = 1000
     # Define parameter sweep
 
     rng = np.random.default_rng(seed=12345)  # master seed for reproducibility
-    # param_grid = {
-    #     'seed': rng.integers(low=0, high=2 ** 32 - 1, size=N_EXPERIMENTS).tolist()
-    # }
-    param_grid = {'seed': [4146964028]} # , 645114141, 773654992]}
+    param_grid = {
+        'seed': rng.integers(low=0, high=2 ** 32 - 1, size=N_EXPERIMENTS).tolist()
+    }
+    # param_grid = {'seed': [4146964028]} # , 645114141, 773654992]}
 
     return create_custom_parameter_sweep(base_params, param_grid)
 

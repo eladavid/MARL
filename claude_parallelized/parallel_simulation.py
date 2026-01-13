@@ -24,7 +24,7 @@ import logging
 from congestion_game.episodic_agent import EpisodicAgent
 from congestion_game.episodic_congestion_game import EpisodicCongestionGame
 from congestion_game.policies import make_linear_softmax_policy, AgentPolicy, DiscreteStatePolicy, \
-    DiscreteStatePolicyNoEmbeddings
+    DiscreteStatePolicyNoEmbeddings, DirectTabularPolicy
 from congestion_game.reward_functions import g_func, make_u_i, make_potential_func, make_random_g_func, \
     make_random_u_funcs
 import torch.optim as optim
@@ -76,13 +76,13 @@ class SimulationConfig:
     state_dim: int = 3
     action_dim: int = 3
     history_len: int = 1
-    episode_len: int = 64
+    episode_len: int = 16
     gamma: float = 0.99
 
     # Training parameters
-    batch_size: int = 128
-    num_episodes: int = 131072  # batch_size * 1024
-    use_episodic_freeze: bool = True
+    batch_size: int = 4
+    num_episodes: int = 200  # batch_size * 1024
+    use_episodic_freeze: bool = False
     use_baseline: bool = True
     learning_rate: float = 1e-3
 
@@ -306,11 +306,12 @@ class SimulationManager:
         agents = []
         for i in range(config.num_agents):
             init_state = config.init_states_tuple[i]
-            policy = DiscreteStatePolicyNoEmbeddings(
-                state_vocab_sizes=(config.history_len + 1) * [config.state_dim],
-                hidden_dim=config.action_dim,
-                num_actions=config.action_dim
-            )
+            # policy = DiscreteStatePolicyNoEmbeddings(
+            #     state_vocab_sizes=(config.history_len + 1) * [config.state_dim],
+            #     hidden_dim=config.action_dim,
+            #     num_actions=config.action_dim
+            # )
+            policy = DirectTabularPolicy([config.state_dim for _ in range(config.history_len + 1)], config.action_dim)
             agent = EpisodicAgent(config.state_dim, config.action_dim,
                                   policy_func=policy, init_state=init_state)
             agents.append(agent)
@@ -534,7 +535,7 @@ def find_joint_optimum(num_agents, num_states, num_actions, joint_reward_func, g
 
 
 def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
-          use_baseline: bool = False, learning_rate: float = 1e-3):
+          use_baseline: bool = False, learning_rate: float = 1e-3, tau: float = 1e-5):
     """Train the agents using REINFORCE"""
     independent_optimizers = []
     for agent in env.agents:
@@ -546,11 +547,13 @@ def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
 
     gamma = 0.99  # Should be passed as parameter
 
-    for episode in tqdm(range(num_episodes // batch_size), desc="Training: "):
+    for episode in tqdm(range(num_episodes), desc="Training: "):
         all_agent_logprobs = [[] for _ in env.agents]
         all_agent_returns = [[] for _ in env.agents]
         all_episode_potentials = []
 
+        if episode % 20 == 0 and episode > 0 and batch_size < 128:
+            batch_size *= 2
         for b in range(batch_size):
             env.reset()
             actions, logprobs, rewards, potentials = env.do_episode()
@@ -596,9 +599,11 @@ def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
         for optimizer in independent_optimizers:
             optimizer.zero_grad()
         total_loss.backward()
-        for i, optimizer in enumerate(independent_optimizers):
-            # torch.nn.utils.clip_grad_norm_(env.agents[i].policy_func.parameters(), max_norm=0.1)  # Example max_norm
+        for optimizer, agent in zip(independent_optimizers, env.agents):
             optimizer.step()
+            # if class is tabular
+            if type(agent.policy_func) is DirectTabularPolicy:
+                agent.policy_func.project_parameters_onto_simplex()
 
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
 
@@ -657,8 +662,8 @@ if __name__ == '__main__':
         num_agents=3,
         state_dim=3,
         action_dim=3,
-        num_episodes=32768,  # Smaller for example
-        batch_size=128,
+        num_episodes=200,  # Smaller for example
+        batch_size=4,
         experiment_name="congestion_game_parallel"
     )
     

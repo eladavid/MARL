@@ -2,7 +2,7 @@ import itertools
 
 import numpy as np
 import torch
-
+import copy
 
 class EpisodicAgent:
     def __init__(self, state_dim, action_dim, policy_func, init_state=None):
@@ -13,6 +13,14 @@ class EpisodicAgent:
         self.state = np.copy(self.init_state)
         self.history = []
         self.policy_map = {}
+
+    def get_params(self):
+        # Deep-copy state_dict so later operations cannot modify it
+        return copy.deepcopy(self.policy_func.state_dict())
+
+    def set_params(self, state_dict):
+        # Restore parameters
+        self.policy_func.load_state_dict(copy.deepcopy(state_dict))
 
     def start_new_episode(self):
         self.policy_map = {}  # clear old mappings

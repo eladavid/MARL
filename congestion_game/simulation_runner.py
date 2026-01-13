@@ -1,4 +1,5 @@
 import pickle
+from typing import List
 
 import numpy as np
 import torch
@@ -9,11 +10,11 @@ import pickle as pkl
 
 from congestion_game.episodic_agent import EpisodicAgent
 from congestion_game.episodic_congestion_game import EpisodicCongestionGame
+from congestion_game.optimizers import LangevinSGD
 from congestion_game.policies import make_linear_softmax_policy, AgentPolicy, DiscreteStatePolicy, \
-    DiscreteStatePolicyNoEmbeddings
+    DiscreteStatePolicyNoEmbeddings, PolicyArchive, DirectTabularPolicy
 from congestion_game.reward_functions import g_func, make_u_i, make_potential_func, make_random_g_func, \
     make_random_u_funcs
-import torch.optim as optim
 
 from congestion_game.utils import evaluate_policy, visualize_joint_mdp, compute_discounted_returns
 
@@ -105,13 +106,17 @@ def train(env: EpisodicCongestionGame,
     # Set optimizers
     independent_optimizers = []
     for i, agent in enumerate(env.agents):
-        independent_optimizers.append(optim.SGD(agent.policy_func.parameters(), lr=1e-3))
+        from torch.optim import SGD
+        # independent_optimizers.append(SGD(agent.policy_func.parameters(), lr=1e-2))
+        independent_optimizers.append(LangevinSGD(agent.policy_func.parameters(), lr=1e-3, tau=1.))
 
     agents_losses = [[] for _ in env.agents]
     agents_returns = [[] for _ in env.agents]
     episode_potential_sums = []
     all_agents_grad_norms = [[] for _ in env.agents]
-    for episode in tqdm(range(num_episodes // batch_size), desc="REINFORCE Batching"):
+    for episode in tqdm(range(num_episodes), desc="REINFORCE Batching"):
+        if episode % 20 == 0 and episode > 0 and batch_size < 128:
+            batch_size *= 2
         # Collect logprobs and rewards for batch
         all_agent_logprobs = [[] for _ in env.agents]
         all_agent_returns = [[] for _ in env.agents]
@@ -170,10 +175,20 @@ def train(env: EpisodicCongestionGame,
         # # Sum all losses before calling backward
         total_loss = sum(agents_episode_losses)
         for optimizer in independent_optimizers:
+            if episode % 50 == 0 and episode > 0:
+                optimizer.tau *= 0.5
+            #     # lr shrink
+            #     for group in optimizer.param_groups:
+            #         group['lr'] *= 0.1
+
             optimizer.zero_grad()
+
         total_loss.backward()
-        for optimizer in independent_optimizers:
+        for optimizer, agent in zip(independent_optimizers, env.agents):
             optimizer.step()
+            # if class is tabular
+            if type(agent.policy_func) is DirectTabularPolicy:
+                agent.policy_func.project_parameters_onto_simplex()
 
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
         if debug:
@@ -208,10 +223,51 @@ def train(env: EpisodicCongestionGame,
         with open('dbg_stats/batched_episodes_grad_stats.pkl', 'wb') as f:
             pickle.dump(all_agents_grad_norms, f)
 
-    print(f"is current policy NE: {env.check_if_nash_eq()}")
+    # print(f"is current policy NE: {env.check_if_nash_eq()}")
     last_episode_discounted_potentials = [(gamma ** t) * p for t, p in enumerate(potentials)]
     return agents_losses, episode_potential_sums, last_episode_discounted_potentials, actions, agents_returns
 
+def run_meta_algo_step(env: EpisodicCongestionGame,
+                       policy_archive: PolicyArchive,
+                       U_sec_prev: List[float],
+                       U_prev: List[float],
+                       prev_exploration: bool,
+                       tau: float = 10,
+                       m: int = 20):
+    epsilon = np.exp(1 / tau)
+    omega = np.exp(-1 / tau) ** m
+    if not prev_exploration:
+        # randomize with probability omega
+        curr_exploration = True if np.random.rand() < omega else False
+        if curr_exploration:
+            # do new training (from random init)
+            for agent in env.agents:
+                agent.policy_func.reset_parameters()
+            _, _, _, _, returns = train(env=env, num_episodes=NUM_EPISODES, batch_size=BATCH_SIZE, use_baseline=True, debug=DEBUG)
+            U_curr = [np.mean(agent_returns) for agent_returns in returns]
+        else:
+            # keep previous weights - do nothing
+            U_curr = U_prev
+
+    else:
+        curr_exploration = False
+        # weighting of params based on U_sec_prev, U_prev
+        # this is where it becomes messy, we need to store sets of parameters and inject to agents.
+        p_prev = epsilon ** (-U_prev) / (epsilon ** (-U_prev) + epsilon ** (-U_sec_prev))
+        if np.random.rand() < p_prev:
+            agents_policies = policy_archive.get_profile(-1)
+            U_curr = U_prev
+        else:
+            agents_policies = policy_archive.get_profile(-2)
+            U_curr = U_sec_prev
+
+        for i, agent in enumerate(env.agents):
+            params_to_load = agents_policies[i]
+            agent.policy_func.load_parameters(params_to_load)
+
+    policy_archive.add_profile(env.agents)
+    # todo - stuff to return what you need
+    return curr_exploration, env, U_curr
 
 def run_episodic_simulation(env: EpisodicCongestionGame, num_episodes):
     all_actions, all_rewards = [], []
@@ -262,18 +318,21 @@ if __name__ == '__main__':
     import matplotlib
     matplotlib.use('TkAgg')
 
-    DEBUG = True
+    DEBUG = False
+
+    torch.manual_seed(1)
+    np.random.seed(1)
 
     num_agents = 3
     state_dim = 3
     action_dim = state_dim
     history_len = 1
-    episode_len = 64
+    episode_len = 16
     gamma = 0.99
 
-    BATCH_SIZE = 16
-    NUM_EPISODES = BATCH_SIZE * 32
-    use_episodic_freeze = True
+    BATCH_SIZE = 4
+    NUM_EPISODES = 300
+    use_episodic_freeze = False
 
 
     aug_dim = history_len + 1
@@ -286,11 +345,12 @@ if __name__ == '__main__':
     for i in range(num_agents):
         init_state = init_states_tuple[i]
         # policy = make_linear_softmax_policy(aug_dim, action_dim)
-        policy = DiscreteStatePolicyNoEmbeddings(
-            state_vocab_sizes=aug_dim * [state_dim],
-            hidden_dim=action_dim,
-            num_actions=action_dim
-        )
+        # policy = DiscreteStatePolicyNoEmbeddings(
+        #     state_vocab_sizes=aug_dim * [state_dim],
+        #     hidden_dim=action_dim,
+        #     num_actions=action_dim
+        # )
+        policy = DirectTabularPolicy([state_dim for _ in range(aug_dim)], action_dim)
         agent = EpisodicAgent(state_dim, action_dim, policy_func=policy, init_state=init_state)
         agents.append(agent)
 
@@ -318,9 +378,32 @@ if __name__ == '__main__':
         with open(policy_path, 'wb') as f:
             pkl.dump(optimal_policy, f)
     opt_policy_induced_transitions = {(s, a): a for s, a in optimal_policy.items()}
-    visualize_joint_mdp(opt_policy_induced_transitions)
+    # visualize_joint_mdp(opt_policy_induced_transitions)
     optimal_episode_discounted_potential, optimal_episode_step_discounted_potentials = evaluate_policy(ecg.agents, optimal_policy, make_potential_func(state_dim), gamma=0.99, episode_len=episode_len)
+
+    policy_archive = PolicyArchive(max_size=3)
+
+    # first 2 runs - fill the stack for meta algo
     agents_losses, potentials, last_episode_potentials, last_actions, returns = train(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, use_baseline=True ,debug=DEBUG)
+    # policy_archive.add_profile(ecg.agents)
+    # U_sec_prev = [np.mean(agent_returns) for agent_returns in returns]
+    # for agent in ecg.agents:
+    #     agent.policy_func.reset_parameters()
+    # # need to figure out how to store weights
+    # _, _, _, _, returns = train(ecg, NUM_EPISODES, batch_size=BATCH_SIZE, use_baseline=True, debug=DEBUG)
+    # policy_archive.add_profile(ecg.agents)
+    # U_prev = [np.mean(agent_returns) for agent_returns in returns]
+    #
+    # # run meta algo
+    # NUM_META_ALGO_RUNS = 10000
+    # prev_exploration = False
+    #
+    # for jjj in range(NUM_META_ALGO_RUNS):
+    #     curr_exploration, env, U_curr = run_meta_algo_step(ecg, policy_archive, U_sec_prev=U_sec_prev, U_prev=U_prev, prev_exploration=prev_exploration)
+    #     prev_exploration = curr_exploration
+    #     U_sec_prev = U_prev
+    #     U_prev = U_curr
+
     ecg.reset()
     argmax_actions, max_logprobs, argmax_rewards, argmax_potentials = ecg.do_episode(is_inference=True)
     print(f"max probs: {[torch.exp(l) for l in max_logprobs]}")
