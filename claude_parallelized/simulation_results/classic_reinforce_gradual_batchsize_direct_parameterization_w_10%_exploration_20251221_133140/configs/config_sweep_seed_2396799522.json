@@ -1,0 +1,22 @@
+{
+  "num_agents": 3,
+  "state_dim": 3,
+  "action_dim": 3,
+  "history_len": 1,
+  "episode_len": 16,
+  "gamma": 0.99,
+  "batch_size": 4,
+  "num_episodes": 1500,
+  "use_episodic_freeze": false,
+  "use_baseline": true,
+  "learning_rate": 0.001,
+  "init_states_tuple": [
+    1,
+    1,
+    1
+  ],
+  "seed": 2396799522,
+  "experiment_name": "classic_reinforce_gradual_batchsize_direct_parameterization_w_10%_exploration",
+  "run_id": "sweep_seed_2396799522",
+  "check_nash_equilibrium": false
+}
