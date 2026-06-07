@@ -535,7 +535,9 @@ def find_joint_optimum(num_agents, num_states, num_actions, joint_reward_func, g
 
 
 def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
-          use_baseline: bool = False, learning_rate: float = 1e-3, tau: float = 1e-5):
+          use_baseline: bool = False, learning_rate: float = 1e-3, tau: float = 1e-5,
+          grow_batch: bool = True,
+          tb_writer=None, tb_tag: str = "pg/soft_ratio", tb_step0: int = 0, tb_norm: float = 1.0):
     """Train the agents using REINFORCE"""
     independent_optimizers = []
     for agent in env.agents:
@@ -552,7 +554,7 @@ def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
         all_agent_returns = [[] for _ in env.agents]
         all_episode_potentials = []
 
-        if episode % 20 == 0 and episode > 0 and batch_size < 128:
+        if grow_batch and episode % 20 == 0 and episode > 0 and batch_size < 128:
             batch_size *= 2
         for b in range(batch_size):
             env.reset()
@@ -606,6 +608,10 @@ def train(env: EpisodicCongestionGame, num_episodes: int, batch_size: int = 1,
                 agent.policy_func.project_parameters_onto_simplex()
 
         episode_potential_sums.append(torch.mean(torch.stack(all_episode_potentials)).item())
+        if tb_writer is not None:
+            tb_writer.add_scalar(tb_tag, episode_potential_sums[-1] / tb_norm, tb_step0 + episode)
+            if episode % 10 == 0:
+                tb_writer.flush()
 
     return agents_losses, episode_potential_sums, None, actions, agents_returns
 

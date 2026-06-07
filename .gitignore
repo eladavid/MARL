@@ -1,0 +1,9 @@
+
+# meta-algorithm experiment outputs / local artifacts (added 2026-06)
+__pycache__/
+*.pyc
+*.log
+runs/
+results_meta/
+single_run_results/
+fig4_nu_beta.png
