@@ -35,16 +35,31 @@ Python 3.10–3.12, CPU-only is fine (tiny tabular game). Run **from the repo ro
 ```bash
 # 1) GENERATE candidate pairs in parallel (the expensive part).  --workers = #cores.
 python run_meta_experiment.py generate \
-       --inits 122 022 222 111 000 012 \
-       --K 1000 --sub-episodes 800 --sub-batch 64 \
-       --workers 32 --out results_meta
+       --inits 122 022 222 111 \
+       --K 200 --sub-episodes 400 --sub-batch 32 \
+       --workers 32 --save-every 5 --out results_meta
 
 # 2) SELECT: replay through the two-stage rule, sweep beta, many seeds -> CSV + figure (seconds).
 python run_meta_experiment.py select \
-       --inits 122 022 222 111 000 012 \
+       --inits 122 022 222 111 \
        --epochs 2000 --seeds 50 --out results_meta
 ```
-Or everything at once (small/local): `python run_meta_experiment.py all --inits 122 022 222 111 --K 200 --sub-episodes 800`
+Or everything at once (small/local): `python run_meta_experiment.py all --inits 122 --K 50 --sub-episodes 400 --sub-batch 32`
+
+## Recommended parameters & runtime (calibrated)
+Per-candidate cost is **linear**: `≈ 0.55 ms × (sub_episodes × sub_batch × 16)` ≈ **`sub_episodes × sub_batch × 9 µs`** on one core. Measured points: `400 ep × 32 batch ≈ 108 s/candidate` and reaches the optimum **~29% of the time** (`PSGA @opt`).
+
+| profile | `--K` `--sub-episodes` `--sub-batch` | `PSGA @opt` | s/candidate (1 core) | wall for 1 init |
+|---|---|---|---|---|
+| **default (validated)** | `200  400  32` | ~0.29 | ~108 s | ~12 min @32 cores · ~45 min @8 |
+| **harder / faster** | `200  250  16` | lower (verify >0) | ~35 s | ~4 min @32 · ~15 min @8 |
+
+- **`--K`**: 100–200 is plenty — the pool is only a *sample* of the candidate distribution (selection resamples with replacement). `K=1000` is 5–10× overkill (≈ a *day* per init — don't).
+- **`--sub-episodes` / `--sub-batch`**: must keep `PSGA @opt > 0` (printed live during `generate`). `400/32 → 0.29`; **120 episodes → ~0** (too short, chain can't move). Lower `sub_episodes` to get a *harder* (lower-baseline) operating point — just watch the printed `@opt`.
+- **`--epochs` / `--seeds`** (select): cheap (seconds) — scale freely for tighter error bars.
+
+## Checkpointing & resume (safe to interrupt)
+`generate` **saves incrementally** (every `--save-every` candidates, atomic write) and is **resumable**: each candidate is keyed by seed, so re-running the *same command* loads what's done and generates only the rest. A SLURM timeout / Ctrl-C loses at most `--save-every` candidates. To extend a pool, just re-run with a larger `--K`.
 
 ### Key knobs
 - `--inits` : initial states as digit strings, e.g. `122` = `(1,2,2)`. (Trap-prone inits make the rescue visible; the optimum is representable at the default `H=1`.)
@@ -66,9 +81,10 @@ Or everything at once (small/local): `python run_meta_experiment.py all --inits 
   ```bash
   #SBATCH -c 32
   #SBATCH --mem=8G
-  #SBATCH -t 02:00:00
-  python run_meta_experiment.py generate --inits 122 022 222 111 000 012 --K 1000 \
-         --sub-episodes 800 --sub-batch 64 --workers $SLURM_CPUS_PER_TASK --out results_meta
-  python run_meta_experiment.py select --inits 122 022 222 111 000 012 --epochs 2000 --seeds 50 --out results_meta
+  #SBATCH -t 01:00:00
+  python run_meta_experiment.py generate --inits 122 022 222 111 --K 200 \
+         --sub-episodes 400 --sub-batch 32 --workers $SLURM_CPUS_PER_TASK --save-every 5 --out results_meta
+  python run_meta_experiment.py select --inits 122 022 222 111 --epochs 2000 --seeds 50 --out results_meta
   ```
+  (Resumable — if the job hits the time limit, just resubmit the same command and it continues.)
 - Then copy back `results_meta/` (the `.pkl`s + `nu_beta.csv` + `fig4_nu_beta.png`).

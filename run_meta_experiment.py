@@ -26,10 +26,27 @@ import sys, os, argparse, pickle, csv, random as pyrandom
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "claude_parallelized"))
 import numpy as np
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from meta_algorithm import accepts, optimal_phi
-from meta_parallel import generate_pairs
+from meta_parallel import gen_candidate
 
 BETAS = [1.0, 0.5, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01]
+
+
+def _atomic_save(path, data):
+    tmp = path + ".tmp"
+    with open(tmp, "wb") as f:
+        pickle.dump(data, f)
+    os.replace(tmp, path)           # atomic: never leaves a half-written file on interrupt
+
+
+def _load_or_init(path, init):
+    if os.path.exists(path):
+        data = pickle.load(open(path, "rb"))
+        if not isinstance(data.get("pairs"), dict):     # migrate old list format
+            data["pairs"] = {i: p for i, p in enumerate(data["pairs"])}
+        return data
+    return {"init": init, "opt": optimal_phi(init), "pairs": {}}     # pairs keyed by seed
 
 
 def parse_init(s):                       # "122" -> (1,2,2)
@@ -55,19 +72,33 @@ def two_stage_select(pairs, opt, beta, epochs, seed, burn_in, reduced=True):
 
 
 def cmd_generate(a):
+    """Incremental + resumable: each candidate saved as it completes; re-running
+    skips already-done seeds and continues. Atomic writes survive interrupts."""
     os.makedirs(a.out, exist_ok=True)
-    for s in a.inits:
-        init = parse_init(s)
-        opt = optimal_phi(init)
-        print(f"[generate] init {init}  opt={opt:.2f}  K={a.K} "
-              f"(sub_episodes={a.sub_episodes}, batch={a.sub_batch}, workers={a.workers})", flush=True)
-        pairs = generate_pairs(init, a.K, a.sub_episodes, a.sub_batch, a.lr, a.workers)
-        with open(os.path.join(a.out, f"pairs_{s}.pkl"), "wb") as f:
-            pickle.dump({"init": init, "opt": opt, "pairs": pairs,
-                         "sub_episodes": a.sub_episodes, "sub_batch": a.sub_batch}, f)
-        cr = [c[2] / opt for _, c in pairs]
-        print(f"           saved {len(pairs)} pairs | PSGA @opt {np.mean([r>=0.99 for r in cr]):.2f} "
-              f"| mean {np.mean(cr):.3f}", flush=True)
+    workers = a.workers or max(1, (os.cpu_count() or 2) - 1)
+    for s_str in a.inits:
+        init = parse_init(s_str)
+        path = os.path.join(a.out, f"pairs_{s_str}.pkl")
+        data = _load_or_init(path, init)
+        data["sub_episodes"], data["sub_batch"] = a.sub_episodes, a.sub_batch
+        opt = data["opt"]
+        todo = [s for s in range(a.K) if s not in data["pairs"]]
+        print(f"[generate] init {init}  opt={opt:.2f}  have {len(data['pairs'])}/{a.K}, "
+              f"generating {len(todo)} more (ep={a.sub_episodes}, batch={a.sub_batch}, "
+              f"workers={workers}, save_every={a.save_every})", flush=True)
+        if not todo:
+            print("           already complete — skipping.", flush=True); continue
+        args = [(s, init, a.sub_episodes, a.sub_batch, a.lr) for s in todo]
+        with ProcessPoolExecutor(max_workers=workers) as ex:
+            futs = {ex.submit(gen_candidate, ar): ar[0] for ar in args}
+            for i, fut in enumerate(as_completed(futs), 1):
+                data["pairs"][futs[fut]] = fut.result()
+                if i % a.save_every == 0 or i == len(todo):
+                    _atomic_save(path, data)
+                    cr = [c[2] / opt for _, c in data["pairs"].values()]
+                    print(f"           [{len(data['pairs'])}/{a.K}] saved | "
+                          f"PSGA @opt {np.mean([r>=0.99 for r in cr]):.2f} | mean {np.mean(cr):.3f}", flush=True)
+        print(f"           done init {init}: {len(data['pairs'])} pairs at {path}", flush=True)
 
 
 def cmd_select(a):
@@ -76,7 +107,8 @@ def cmd_select(a):
         p = os.path.join(a.out, f"pairs_{s}.pkl")
         if not os.path.exists(p):
             print(f"[select] missing {p} (run `generate` first) — skipping", flush=True); continue
-        d = pickle.load(open(p, "rb")); init, opt, pairs = d["init"], d["opt"], d["pairs"]
+        d = pickle.load(open(p, "rb")); init, opt = d["init"], d["opt"]
+        pairs = list(d["pairs"].values()) if isinstance(d["pairs"], dict) else d["pairs"]
         pool_at_opt = float(np.mean([c[2] / opt >= 0.99 for _, c in pairs]))
         for b in BETAS:
             nus = [two_stage_select(pairs, opt, b, a.epochs, seed=i, burn_in=a.burn_in)[0]
@@ -118,6 +150,8 @@ if __name__ == "__main__":
     ap.add_argument("--sub-batch", dest="sub_batch", type=int, default=64)
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--workers", type=int, default=None)
+    ap.add_argument("--save-every", dest="save_every", type=int, default=5,
+                    help="checkpoint the pairs file every N completed candidates (resumable)")
     ap.add_argument("--epochs", type=int, default=2000, help="selection-chain length (select)")
     ap.add_argument("--seeds", type=int, default=50, help="selection seeds for error bars")
     ap.add_argument("--burn-in", dest="burn_in", type=int, default=200)
