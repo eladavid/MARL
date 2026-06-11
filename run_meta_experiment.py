@@ -88,7 +88,7 @@ def cmd_generate(a):
               f"workers={workers}, save_every={a.save_every})", flush=True)
         if not todo:
             print("           already complete — skipping.", flush=True); continue
-        args = [(s, init, a.sub_episodes, a.sub_batch, a.lr) for s in todo]
+        args = [(s, init, a.sub_episodes, a.sub_batch, a.lr, a.vectorized) for s in todo]
         with ProcessPoolExecutor(max_workers=workers) as ex:
             futs = {ex.submit(gen_candidate, ar): ar[0] for ar in args}
             for i, fut in enumerate(as_completed(futs), 1):
@@ -152,6 +152,9 @@ if __name__ == "__main__":
     ap.add_argument("--workers", type=int, default=None)
     ap.add_argument("--save-every", dest="save_every", type=int, default=5,
                     help="checkpoint the pairs file every N completed candidates (resumable)")
+    ap.add_argument("--no-vectorized", dest="vectorized", action="store_false",
+                    help="use the original (slow) sequential trainer instead of the vectorized one")
+    ap.set_defaults(vectorized=True)
     ap.add_argument("--epochs", type=int, default=2000, help="selection-chain length (select)")
     ap.add_argument("--seeds", type=int, default=50, help="selection seeds for error bars")
     ap.add_argument("--burn-in", dest="burn_in", type=int, default=200)

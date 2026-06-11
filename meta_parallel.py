@@ -16,19 +16,28 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "claude_parallelized"))
 import numpy as np, torch
 from concurrent.futures import ProcessPoolExecutor
-from meta_algorithm import make_env, eval_hardened, accepts, optimal_phi, randomize, N
+from meta_algorithm import make_env, eval_hardened, accepts, optimal_phi, randomize, N, S, A, T, GAMMA
 from parallel_simulation import train
+from vectorized_train import train_vectorized
 
 
 def gen_candidate(args):
-    """One parallel slot: random restart -> (jump_stat, psga_cand_stat)."""
-    seed, init, sub_episodes, sub_batch, lr = args
+    """One parallel slot: random restart -> (jump_stat, psga_cand_stat).
+    Uses the vectorized trainer by default (~16x faster, validated equal in
+    distribution by test_vectorized.py); pass vectorized=False for the original."""
+    seed, init, sub_episodes, sub_batch, lr = args[:5]
+    vectorized = args[5] if len(args) > 5 else True
     pyrandom.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
     ecg = make_env(init)
-    randomize(ecg)                                  # theta_rand ~ U[Theta]
-    jump = eval_hardened(ecg)                        # harden(theta_rand)
-    train(ecg, sub_episodes, batch_size=sub_batch, use_baseline=True,
-          learning_rate=lr, grow_batch=False)        # MAC-REINFORCE from theta_rand
+    randomize(ecg)                                   # theta_rand ~ U[Theta]
+    jump = eval_hardened(ecg)                         # harden(theta_rand)
+    if vectorized:
+        pols = [ag.policy_func for ag in ecg.agents]  # MAC-REINFORCE from theta_rand (vectorized)
+        train_vectorized(pols, tuple(init), sub_episodes, sub_batch,
+                         S=S, A=A, H=1, T=T, gamma=GAMMA, lr=lr, use_baseline=True)
+    else:
+        train(ecg, sub_episodes, batch_size=sub_batch, use_baseline=True,
+              learning_rate=lr, grow_batch=False)
     cand = eval_hardened(ecg)
     return jump, cand
 
