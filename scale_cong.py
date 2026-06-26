@@ -12,7 +12,7 @@ import time, itertools, numpy as np
 
 W     = 10.0     # congestion weight (tune so coordination matters vs. the move reward)
 C     = 3.0
-GAMMA = 0.99
+GAMMA = 1.0   # undiscounted finite-horizon, matches the paper
 T     = 16
 
 

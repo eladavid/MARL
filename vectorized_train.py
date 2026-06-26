@@ -73,7 +73,7 @@ def reinforce_loss(logps, rews, gamma, batch_size, use_baseline):
 
 
 def train_vectorized(policies, init_states, num_episodes, batch_size,
-                     S=3, A=3, H=1, T=16, gamma=0.99, lr=1e-3, use_baseline=True):
+                     S=3, A=3, H=1, T=16, gamma=1.0, lr=1e-3, use_baseline=True):
     """In-place MAC-REINFORCE on a list of DirectTabularPolicy. Returns per-episode
     discounted potential (mean over batch) — same quantity as the original train()."""
     from congestion_game.policies import DirectTabularPolicy

@@ -15,7 +15,7 @@ import itertools, time, numpy as np
 
 R = {0}; M = {1, 2, 3, 4}; NODES = 5; B = 4      # single reload bottleneck + 4 missions (>n agents): harder
 W_COV, C_BATT, W_CONG = 10.0, 3.0, 4.0
-GAMMA, T = 0.99, 16
+GAMMA, T = 1.0, 16   # undiscounted finite-horizon, matches the paper
 BATT = B + 1                                   # battery levels 0..B
 
 FROZEN_RELOAD = 0          # at b=0 the frozen (non-parameterized) policy sends the drone to R0

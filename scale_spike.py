@@ -21,7 +21,7 @@ import time, itertools, numpy as np
 
 BONUS = 10.0     # coordination bonus for a full-coverage permutation (matches 3x3x3 scale)
 C     = 3.0      # per-agent move reward (matches 3x3x3 u scale)
-GAMMA = 0.99
+GAMMA = 1.0   # undiscounted finite-horizon, matches the paper
 T     = 16
 
 

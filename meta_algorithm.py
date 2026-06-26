@@ -22,7 +22,7 @@ from congestion_game.reward_functions import g_func, make_u_i, make_potential_fu
 from parallel_simulation import train, find_joint_optimum
 
 N, S, A = 3, 3, 3
-T, GAMMA, R_MAX = 16, 0.99, 14.0          # R_MAX so Gbar,Ubar in (0,1); doesn't change argmax
+T, GAMMA, R_MAX = 16, 1.0, 14.0          # R_MAX so Gbar,Ubar in (0,1); doesn't change argmax
 EXPLORE = 0.1                              # alpha-greedy inside the MAC-REINFORCE subroutine
 
 

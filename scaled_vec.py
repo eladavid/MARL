@@ -82,7 +82,7 @@ def run(n, m, g_fn, u_fn, phistar, H, seeds, episodes, batch, T, gamma, lr, labe
 if __name__ == "__main__":
     from scale_spike2 import g_gen, u_gen
     from scale_spike import closed_form_optimum
-    T, GAMMA = 16, 0.99
+    T, GAMMA = 16, 1.0
     print("VECTORIZED correctness+timing vs loop version (expect k=3 H=1 -> 1.0):\n")
     for k in [3, 4, 5, 6]:
         cf, _ = closed_form_optimum(k)
