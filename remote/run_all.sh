@@ -44,6 +44,12 @@ python3 -u remote/pool_worker.py --offset 0 --count $H0_Q --episodes 4000 \
     --chunk 1000 --H 0 --batch sched --out "$OUT" > "$OUT/log_H0.log" 2>&1 &
 pids+=($!)
 
+# ---- Phase 2b: random-deterministic baseline (training-free; reproduces "0 of 1e6") ----
+echo "=== Phase 2b: random-deterministic search (${RAND_TOTAL:-1000000} policies) ==="
+python3 -u remote/random_search.py --total ${RAND_TOTAL:-1000000} --H 1 --out "$OUT" \
+    > "$OUT/log_random.log" 2>&1 &
+pids+=($!)
+
 echo "waiting for ${#pids[@]} workers..."
 for p in "${pids[@]}"; do wait "$p"; done
 

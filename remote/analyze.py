@@ -31,11 +31,17 @@ def meta_curve(stats, star, betas, epochs=4000, burn=400, seeds=6):
     return [float(np.mean([chain(b,s) for s in range(seeds)])) for b in betas]
 
 if __name__ == "__main__":
+    import json
     ap=argparse.ArgumentParser(); ap.add_argument("--dir",default="results_remote")
-    ap.add_argument("--rand",type=float,default=0.789); a=ap.parse_args()
+    ap.add_argument("--rand",type=float,default=None); a=ap.parse_args()
     s1,r1,star=load(a.dir,1)                     # H=1 pool (all batch modes)
     s0,r0,star0=load(a.dir,0)                     # H=0 memoryless pool
     star=star or star0
+    # random-search baseline: prefer the saved artifact, else the CLI value, else 0.789
+    rs_path=os.path.join(a.dir,"random_search.json")
+    if a.rand is not None: RAND=a.rand
+    elif os.path.exists(rs_path): RAND=json.load(open(rs_path))["best"]
+    else: RAND=0.789
     betas=[0.3,0.1,0.05,0.02,0.01,0.005]
     nu1=meta_curve(s1,star,betas) if s1 else []
     h0_best = float(r0.max()) if len(r0) else float("nan")

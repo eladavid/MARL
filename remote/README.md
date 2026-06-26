@@ -7,10 +7,20 @@ text summary. Written so another agent (or a human) can pick it up cold.
 ## TL;DR — how to run
 ```bash
 # from the MARL repo root (branch: feature/projected_gd_with_batch_variance_control)
-bash remote/run_all.sh
-# results land in results_remote/: fig_drone_strategies.pdf, SUMMARY.txt
-# tune via env, e.g.:  POOL_Q=50000 NCORES=30 bash remote/run_all.sh
+git pull
+POOL_Q=50000 NCORES=30 bash remote/run_all.sh     # tune to the box's physical cores
+# results in results_remote/:
+#   fig_drone_strategies.pdf, SUMMARY.txt              (the figure + numbers)
+#   part_H1_sched_*.pkl, part_H0_sched_*.pkl           (pools, resumable)
+#   random_search.json                                 (the "0 of 1e6" baseline, reproducible)
+# env knobs: POOL_Q (H=1 pool size), H0_Q, RAND_TOTAL (random-search count), EPISODES, NCORES
 ```
+This run **pins p** (does a large pool find the optimum at all? local got 0/10,600) and
+saves every number in the figure as a reproducible artifact. Expectation, per our
+analysis: still ~0 optima — the optimum requires individual *sacrifice* and has a
+vanishing basin; β/temperature is a *selection* knob and cannot make the *generator*
+emit a candidate it never produces. A bigger pool tightens the bound (e.g. 0/50,000),
+it does not change the conclusion.
 
 ## What the paper is about (1 paragraph)
 Cooperative MARL as a finite-horizon **Markov potential game** with **decoupled,
