@@ -14,6 +14,17 @@ convergence, Nash, and optimality.
   + **α-greedy exploration** (the "batch variance control"). All notes below describe it.
 - `main` / `master`, `feature/mac_reinforce_v0`, `feature/large_scale_sim`, `feature/entropy_reg` — older / alternates.
 
+## Git / SSH auth (remote is `git@github.com:eladavid/MARL.git`, SSH)
+The remote needs the SSH key unlocked. In a human's interactive Git Bash, run **`ghssh`** once per
+session (function in `~/.bashrc`: starts ssh-agent, adds `~/.ssh/id_rsa` — no passphrase, tests GitHub).
+**For an agent (Claude): `ssh-agent` env does NOT persist across separate tool calls**, so chain the
+unlock into the *same* command as the git op:
+```bash
+eval "$(ssh-agent -s)" >/dev/null 2>&1 && \
+  ssh-add /c/Users/eladdavid1/.ssh/id_rsa < /dev/null >/dev/null 2>&1 && \
+  git pull origin feature/projected_gd_with_batch_variance_control   # (or push/fetch)
+```
+
 ## Quick start
 ```bash
 # from repo root (so `congestion_game` and `claude_parallelized` both import)

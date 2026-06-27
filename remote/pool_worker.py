@@ -42,6 +42,7 @@ def main():
     ap.add_argument("--chunk", type=int, default=250)
     ap.add_argument("--H", type=int, default=1)
     ap.add_argument("--batch", choices=["fixed", "sched"], default="sched")
+    ap.add_argument("--fixed-batch", type=int, default=64, help="batch size when --batch fixed")
     ap.add_argument("--out", type=str, default="results_remote")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
@@ -50,11 +51,25 @@ def main():
     strides_t, S = dp.strides_for(H); NODES = dg.NODES
     rmax = dg.W_COV + dg.C_BATT * n
     def batch_at(ep):
-        return SCHED[min(len(SCHED) - 1, ep * len(SCHED) // a.episodes)] if a.batch == "sched" else 64
+        return SCHED[min(len(SCHED) - 1, ep * len(SCHED) // a.episodes)] if a.batch == "sched" else a.fixed_batch
 
+    # --- resume: load this worker's checkpoint and skip already-finished chunks ---
+    tag = a.batch if a.batch == "sched" else f"fixed{a.fixed_batch}"
+    outpath = os.path.join(a.out, f"part_H{H}_{tag}_{a.offset}.pkl")
     allstats, allratios = [], []
+    if os.path.exists(outpath):
+        try:
+            prev = pickle.load(open(outpath, "rb"))
+            allstats = list(prev["stats"]); allratios = list(prev["ratios"])
+            print(f"[worker {a.offset} H{H} {tag}] resume: {len(allratios)}/{a.count} already done", flush=True)
+        except Exception as e:
+            allstats, allratios = [], []
+            print(f"[worker {a.offset} H{H} {tag}] checkpoint unreadable ({e}); starting fresh", flush=True)
+    done = len(allratios)
     t0 = time.time()
     for c0 in range(0, a.count, a.chunk):
+        if c0 < done:                       # chunk already checkpointed (seeds are deterministic per c0) -> skip
+            continue
         q = min(a.chunk, a.count - c0)
         torch.manual_seed(a.offset + c0)
         P = torch.nn.Parameter(torch.distributions.Dirichlet(torch.ones(NODES)).sample((q, n, S)))
@@ -77,9 +92,10 @@ def main():
         for j in range(q):
             allstats.append((float(G[j] / nrm), U[j] / nrm, float(Phi[j]))); allratios.append(float(Phi[j] / star))
         arr = np.array(allratios)
-        pickle.dump({"stats": allstats, "ratios": arr.tolist(), "star": star, "R_MAX": rmax,
-                     "n": n, "H": H, "batch": a.batch, "offset": a.offset},
-                    open(os.path.join(a.out, f"part_H{H}_{a.batch}_{a.offset}.pkl"), "wb"))
+        with open(outpath + ".tmp", "wb") as fh:
+            pickle.dump({"stats": allstats, "ratios": arr.tolist(), "star": star, "R_MAX": rmax,
+                         "n": n, "H": H, "batch": a.batch, "fixed_batch": a.fixed_batch, "offset": a.offset}, fh)
+        os.replace(outpath + ".tmp", outpath)   # atomic: never leaves a half-written checkpoint
         print(f"[worker {a.offset} H{H} {a.batch}] {len(allstats)}/{a.count}  "
               f"optima(>=0.99)={int((arr>=0.99).sum())}  best={arr.max():.4f}  mean={arr.mean():.3f}  "
               f"({time.time()-t0:.0f}s)", flush=True)

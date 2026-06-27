@@ -33,7 +33,9 @@ def meta_curve(stats, star, betas, epochs=4000, burn=400, seeds=6):
 if __name__ == "__main__":
     import json
     ap=argparse.ArgumentParser(); ap.add_argument("--dir",default="results_remote")
-    ap.add_argument("--rand",type=float,default=None); a=ap.parse_args()
+    ap.add_argument("--rand",type=float,default=None)
+    ap.add_argument("--meta-epochs",type=int,default=4000,help="meta-chain length; needs >> 1/p to reach a rare optimum")
+    ap.add_argument("--meta-seeds",type=int,default=6); a=ap.parse_args()
     s1,r1,star=load(a.dir,1)                     # H=1 pool (all batch modes)
     s0,r0,star0=load(a.dir,0)                     # H=0 memoryless pool
     star=star or star0
@@ -42,15 +44,15 @@ if __name__ == "__main__":
     if a.rand is not None: RAND=a.rand
     elif os.path.exists(rs_path): RAND=json.load(open(rs_path))["best"]
     else: RAND=0.789
-    betas=[0.3,0.1,0.05,0.02,0.01,0.005]
-    nu1=meta_curve(s1,star,betas) if s1 else []
+    betas=[0.3,0.1,0.05,0.02,0.01,0.005,0.002,0.001]
+    nu1=meta_curve(s1,star,betas,epochs=a.meta_epochs,seeds=a.meta_seeds) if s1 else []
     h0_best = float(r0.max()) if len(r0) else float("nan")
-    h0_meta = meta_curve(s0,star,[0.005])[0] if s0 else float("nan")
+    h0_meta = meta_curve(s0,star,[0.001],epochs=a.meta_epochs,seeds=a.meta_seeds)[0] if s0 else float("nan")
     summary=[
         f"DRONE n=4 strategy comparison (Phi/Phi*), Phi*={star:.2f}",
         f"  H=0 memoryless ceiling (best of {len(r0)}):   {h0_best:.3f}   [+meta {h0_meta:.3f}]" if len(r0) else "  H=0: (no data)",
         f"  single PSGA H=1 (mean of {len(r1)}):           {r1.mean():.3f}  (worst {r1.min():.3f})" if len(r1) else "  H=1: (no data)",
-        f"  random-deterministic search:                  {a.rand:.3f}",
+        f"  random-deterministic search:                  {RAND:.3f}",
         f"  MAC-REINFORCE + meta (cold beta):             {nu1[-1]:.3f}" if nu1 else "",
         f"  VI global optimum:                            1.000",
         f"  H=1 pool optima(>=0.99): {int((r1>=0.99).sum())} of {len(r1)}" if len(r1) else "",
@@ -63,7 +65,7 @@ if __name__ == "__main__":
         axL.hist(r1,bins=np.linspace(0,1.02,40),color=LAB,alpha=0.8)
         if len(r0): axL.axvline(h0_best,color=GREEN,lw=1.8,ls=(0,(1,1)),label=f"H=0 ceiling ({h0_best:.2f})")
         axL.axvline(r1.mean(),color=GRAY,lw=1.5,label=f"single PSGA mean ({r1.mean():.2f})")
-        axL.axvline(a.rand,color=RED,lw=1.5,ls="-.",label=f"random search ({a.rand:.2f})")
+        axL.axvline(RAND,color=RED,lw=1.5,ls="-.",label=f"random search ({RAND:.2f})")
         axL.axvline(nu1[-1],color=LAB,lw=2.2,label=f"meta-algorithm ({nu1[-1]:.2f})")
         axL.axvline(1.0,color=GOLD,lw=1.6,ls="--",label=r"VI optimum (1.0)")
         axL.set_xlabel(r"$\Phi/\Phi^\star$ reached"); axL.set_ylabel(f"# of {len(r1)} runs")
@@ -71,7 +73,7 @@ if __name__ == "__main__":
         axR.plot(betas,nu1,"o-",color=LAB,lw=2,label=r"meta $\nu^\beta$")
         if len(r0): axR.axhline(h0_best,color=GREEN,lw=1.2,ls=(0,(1,1)),label="H=0 ceiling")
         axR.axhline(r1.mean(),ls=":",color=GRAY,lw=1.3,label="single PSGA mean")
-        axR.axhline(a.rand,ls="-.",color=RED,lw=1.2,label="random search")
+        axR.axhline(RAND,ls="-.",color=RED,lw=1.2,label="random search")
         axR.axhline(1.0,ls="--",color=GOLD,lw=1.4,label="VI optimum")
         axR.set_xscale("log"); axR.invert_xaxis(); axR.set_ylim(0,1.05)
         axR.set_xlabel(r"temperature $\beta$ (cooling $\rightarrow$)"); axR.set_ylabel(r"incumbent $\Phi/\Phi^\star$")

@@ -1,0 +1,7 @@
+DRONE n=4 strategy comparison (Phi/Phi*), Phi*=91.00
+  H=0 memoryless ceiling (best of 2000):   0.266   [+meta 0.214]
+  single PSGA H=1 (mean of 50008):           0.659  (worst -0.059)
+  random-deterministic search:                  0.397
+  MAC-REINFORCE + meta (cold beta):             0.901
+  VI global optimum:                            1.000
+  H=1 pool optima(>=0.99): 2 of 50008

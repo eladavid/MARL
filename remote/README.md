@@ -13,7 +13,8 @@ POOL_Q=50000 NCORES=30 bash remote/run_all.sh     # tune to the box's physical c
 #   fig_drone_strategies.pdf, SUMMARY.txt              (the figure + numbers)
 #   part_H1_sched_*.pkl, part_H0_sched_*.pkl           (pools, resumable)
 #   random_search.json                                 (the "0 of 1e6" baseline, reproducible)
-# env knobs: POOL_Q (H=1 pool size), H0_Q, RAND_TOTAL (random-search count), EPISODES, NCORES
+# env knobs: POOL_Q (H=1 pool size), H0_Q, RAND_TOTAL (random-search count), EPISODES, NCORES,
+#            CHUNK (candidates per checkpoint, default 50 — finer live progress + cheaper resume)
 ```
 This run **pins p** (does a large pool find the optimum at all? local got 0/10,600) and
 saves every number in the figure as a reproducible artifact. Expectation, per our
