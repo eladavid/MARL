@@ -30,15 +30,27 @@ def main():
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     opt = closed_form(a.k, a.rho)
-    allstats = []; t0 = time.time()
+    # --- resume: load this worker's checkpoint and skip finished chunks (this box crashes mid-run) ---
+    outpath = os.path.join(a.out, f"abs_k{a.k}_{a.offset}.pkl")
+    allstats = []
+    if os.path.exists(outpath):
+        try:
+            prev = pickle.load(open(outpath, "rb")); allstats = list(prev["stats"])
+            print(f"[k={a.k} w{a.offset}] resume: {len(allstats)}/{a.count} already done", flush=True)
+        except Exception as e:
+            allstats = []; print(f"[k={a.k} w{a.offset}] checkpoint unreadable ({e}); starting fresh", flush=True)
+    done = len(allstats); t0 = time.time()
     for c0 in range(0, a.count, a.chunk):
+        if c0 < done:                       # chunk already checkpointed (seed deterministic per c0) -> skip
+            continue
         q = min(a.chunk, a.count - c0)
         st = build_pool_stats(a.k, a.rho, q, episodes=a.episodes, seed=a.offset + c0)
         allstats += st
         ratios = np.array([s[2] / opt for s in allstats])
-        pickle.dump({"stats": allstats, "ratios": ratios.tolist(), "opt": opt,
-                     "k": a.k, "rho": a.rho, "offset": a.offset},
-                    open(os.path.join(a.out, f"abs_k{a.k}_{a.offset}.pkl"), "wb"))
+        with open(outpath + ".tmp", "wb") as fh:
+            pickle.dump({"stats": allstats, "ratios": ratios.tolist(), "opt": opt,
+                         "k": a.k, "rho": a.rho, "offset": a.offset, "episodes": a.episodes}, fh)
+        os.replace(outpath + ".tmp", outpath)   # atomic: never leave a half-written checkpoint
         print(f"[k={a.k} w{a.offset}] {len(allstats)}/{a.count}  "
               f"optfrac(>=0.99)={np.mean(ratios>=0.99):.4f}  best={ratios.max():.4f}  "
               f"mean={ratios.mean():.3f}  ({time.time()-t0:.0f}s)", flush=True)
