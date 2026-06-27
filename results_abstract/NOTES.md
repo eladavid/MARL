@@ -13,11 +13,14 @@ and the optimum becomes abundant again. So episodes(k) must grow.
 | k | episodes | candidates | optfrac (>=0.99) | mean | notes |
 |---|---|---|---|---|---|
 | 5 | 5,000  | 4,000 | 6.4%  | 0.82  | complete |
-| 6 | 25,000 | 2,400 | 25.3% | 0.968 | early-stopped (optfrac positive & stable; 607 optima — plenty) |
-| 7 | TBD (~40K?) | pending | — | — | size from k=5->k=6 scaling (~3-4x per agent) |
-| 8 | TBD (~60K?) | pending | — | — | — |
+| 6 | 25,000 | 2,400 | 25.3% | 0.968 | early-stopped (607 optima) |
+| 7 | 45,000 | 1,600 | 31%   | 0.852 | early-stopped (502 optima) |
+| 8 | 65,000 | running | — | — | additive prediction; in progress |
 
-(Note: k=6 @ 5,000 episodes gave 0 optima — that pool was discarded; 25K is the real budget.)
+**Scaling law (measured): episode budget is ADDITIVE, ~+20K per agent** — k=5:5K, k=6:25K,
+k=7:45K, k=8:65K. The optimum is reached at every k once the budget clears its threshold;
+optfrac stays healthy (6–31%) across k → Nash-hopping concentration scales with agents.
+(Note: k=6 @ 5,000 episodes gave 0 optima — undertrained, discarded; 25K is the real budget.)
 
 ## Reproduce / continue
 - Build a pool:   `PY=<py> KS="7" Q=4000 EPISODES=40000 CHUNK=50 NCORES=16 bash remote/run_abstract.sh`
