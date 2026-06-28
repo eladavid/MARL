@@ -15,7 +15,7 @@ and the optimum becomes abundant again. So episodes(k) must grow.
 | 5 | 5,000  | 4,000 | 6.4%  | 0.82  | complete |
 | 6 | 25,000 | 2,400 | 25.3% | 0.968 | early-stopped (607 optima) |
 | 7 | 45,000 | 1,600 | 31%   | 0.852 | early-stopped (502 optima) |
-| 8 | 65,000 | running | — | — | additive prediction; in progress |
+| 8 | 65,000 | 400   | 42.5% | 0.934 | early-stopped (170 optima; ~440s/cand on flaky box -> 1600 would be ~6h, not worth it) |
 
 **Scaling law (measured): episode budget is ADDITIVE, ~+20K per agent** — k=5:5K, k=6:25K,
 k=7:45K, k=8:65K. The optimum is reached at every k once the budget clears its threshold;
